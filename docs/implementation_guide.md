@@ -1,11 +1,11 @@
 # Implementation Guide
 
-Reference for integrating `keystone_colors` into a Rails app.
+Reference for integrating `keystone_ui-colors` into a Rails app.
 
 ## Architecture Overview
 
 ```
-keystone_colors (Rails Engine)
+keystone_ui-colors (Rails Engine)
 ├── ThemePreference model     -- persists per-user accent/surface choices
 ├── CurrentPalette concern    -- builds CSS vars, caches in session
 ├── PaletteHelper             -- renders <style> tag in layout
@@ -16,7 +16,7 @@ keystone_colors (Rails Engine)
 
 ## Database
 
-Single table: `keystone_colors_theme_preferences`
+Single table: `keystone_ui_colors_theme_preferences`
 
 | Column        | Type    | Notes |
 |---------------|---------|-------|
@@ -35,8 +35,8 @@ Unique index on `(owner_type, owner_id)` -- one preference per owner.
 ### 1. Install
 
 ```bash
-bundle add keystone_colors
-bin/rails generate keystone_colors:install
+bundle add keystone_ui-colors
+bin/rails generate keystone_ui:colors:install
 bin/rails db:migrate
 ```
 
@@ -44,7 +44,7 @@ bin/rails db:migrate
 
 ```ruby
 # config/routes.rb
-mount KeystoneColors::Engine => "/keystone_colors"
+mount KeystoneUi::Colors::Engine => "/keystone_ui_colors"
 ```
 
 ### 3. Wire up the controller concern
@@ -52,7 +52,7 @@ mount KeystoneColors::Engine => "/keystone_colors"
 ```ruby
 # app/controllers/application_controller.rb
 class ApplicationController < ActionController::Base
-  include KeystoneColors::CurrentPalette
+  include KeystoneUi::Colors::CurrentPalette
   before_action :set_current_palette
 end
 ```
@@ -93,15 +93,15 @@ Output looks like:
 
 ```js
 // app/javascript/controllers/index.js
-import ThemeSettingsController from "./keystone_colors/theme_settings_controller"
-application.register("keystone-colors--theme-settings", ThemeSettingsController)
+import ThemeSettingsController from "./keystone_ui/colors/theme_settings_controller"
+application.register("keystone-ui--colors--theme-settings", ThemeSettingsController)
 ```
 
 ### 6. Configure (optional)
 
 ```ruby
-# config/initializers/keystone_colors.rb
-KeystoneColors.configure do |config|
+# config/initializers/keystone_ui_colors.rb
+KeystoneUi::Colors.configure do |config|
   config.owner_class_name = "User"            # default
   config.current_owner_method = :current_user  # default
   config.default_template = :ocean             # default
@@ -116,7 +116,7 @@ end
 ```ruby
 # app/models/user.rb
 class User < ApplicationRecord
-  has_one :theme_preference, class_name: "KeystoneColors::ThemePreference", as: :owner
+  has_one :theme_preference, class_name: "KeystoneUi::Colors::ThemePreference", as: :owner
 end
 ```
 
@@ -161,14 +161,14 @@ Selecting a template updates the color pickers. Changing a color picker switches
 ## Linking to Settings
 
 ```erb
-<a href="<%= keystone_colors.root_path %>">Color Settings</a>
+<a href="<%= keystone_ui_colors.root_path %>">Color Settings</a>
 ```
 
 ## Programmatic Usage
 
 ```ruby
 # Apply a template
-pref = KeystoneColors::ThemePreference.find_or_create_by(owner: current_user) do |p|
+pref = KeystoneUi::Colors::ThemePreference.find_or_create_by(owner: current_user) do |p|
   p.accent = "blue"
   p.surface = "zinc"
 end
@@ -178,9 +178,9 @@ pref.apply_template!(:twilight)
 pref.update!(accent: "#e11d48", surface: "#44403c", template_name: "")
 
 # Read palette data
-KeystoneColors::Palettes.accent(:blue)       # => { 50 => "#eff6ff", ... }
-KeystoneColors::Templates[:ocean]             # => { accent: :blue, surface: :slate, ... }
-KeystoneColors::Templates.names               # => [:default, :ocean, :forest, :twilight, :coral, :arctic]
+KeystoneUi::Colors::Palettes.accent(:blue)       # => { 50 => "#eff6ff", ... }
+KeystoneUi::Colors::Templates[:ocean]             # => { accent: :blue, surface: :slate, ... }
+KeystoneUi::Colors::Templates.names               # => [:default, :ocean, :forest, :twilight, :coral, :arctic]
 ```
 
 ## Dependencies

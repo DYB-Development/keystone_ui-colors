@@ -2,7 +2,6 @@ source "https://rubygems.org"
 
 gemspec
 
-gem "keystone_ui", github: "tylercschneider/keystone_ui", branch: "main"
 gem "rake"
 gem "rails"
 gem "minitest", "~> 5.0"  # pin to 5.x; minitest 6 removed minitest/mock

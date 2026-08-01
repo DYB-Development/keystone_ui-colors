@@ -2,9 +2,9 @@
 
 require "test_helper"
 require "rails/generators"
-require "generators/keystone_colors/update/update_generator"
+require "generators/keystone_ui/colors/update/update_generator"
 
-class KeystoneColors::Generators::UpdateGeneratorTest < ActiveSupport::TestCase
+class KeystoneUi::Colors::Generators::UpdateGeneratorTest < ActiveSupport::TestCase
   def destination
     @destination ||= File.expand_path("../../tmp/generator_test", __dir__)
   end
@@ -18,9 +18,9 @@ class KeystoneColors::Generators::UpdateGeneratorTest < ActiveSupport::TestCase
   end
 
   test "copies the Stimulus controller" do
-    Rails::Generators.invoke("keystone_colors:update", [], destination_root: destination, quiet: true)
+    Rails::Generators.invoke("keystone_ui:colors:update", [], destination_root: destination, quiet: true)
 
-    js_path = "#{destination}/app/javascript/controllers/keystone_colors/theme_settings_controller.js"
+    js_path = "#{destination}/app/javascript/controllers/keystone_ui/colors/theme_settings_controller.js"
     assert File.exist?(js_path)
     assert_includes File.read(js_path), "@hotwired/stimulus"
   end

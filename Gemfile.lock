@@ -1,15 +1,7 @@
-GIT
-  remote: https://github.com/tylercschneider/keystone_ui.git
-  revision: 971fd1ceabe5992f4a29b2c46c5ed9b8da2e2995
-  branch: main
-  specs:
-    keystone_ui (0.4.1)
-      view_component (>= 2.0)
-
 PATH
   remote: .
   specs:
-    keystone_colors (0.1.0)
+    keystone_ui-colors (0.1.0)
       activerecord (>= 7.0)
       activesupport (>= 7.0)
       keystone_ui (>= 0.4.1)
@@ -125,6 +117,8 @@ GEM
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     json (2.19.1)
+    keystone_ui (0.6.0)
+      view_component (>= 2.0, < 5)
     language_server-protocol (3.17.0.5)
     lint_roller (1.1.0)
     logger (1.7.0)
@@ -300,8 +294,7 @@ PLATFORMS
 
 DEPENDENCIES
   capybara
-  keystone_colors!
-  keystone_ui!
+  keystone_ui-colors!
   minitest (~> 5.0)
   rails
   rake
