@@ -9,7 +9,7 @@ require "action_controller/railtie"
 require "action_view/railtie"
 
 Bundler.require(*Rails.groups)
-require "keystone_colors"
+require "keystone_ui-colors"
 
 module Dummy
   class Application < Rails::Application

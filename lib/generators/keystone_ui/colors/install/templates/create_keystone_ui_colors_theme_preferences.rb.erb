@@ -1,0 +1,14 @@
+class CreateKeystoneUiColorsThemePreferences < ActiveRecord::Migration[<%= ActiveRecord::Migration.current_version %>]
+  def change
+    create_table :keystone_ui_colors_theme_preferences do |t|
+      t.string :accent, null: false
+      t.string :surface, null: false
+      t.string :template_name
+      t.references :owner, polymorphic: true, null: false
+      t.timestamps
+    end
+
+    add_index :keystone_ui_colors_theme_preferences, %i[owner_type owner_id], unique: true,
+      name: "index_keystone_ui_colors_theme_prefs_on_owner"
+  end
+end

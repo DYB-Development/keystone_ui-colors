@@ -2,5 +2,5 @@
 
 Rails.application.routes.draw do
   root "home#index"
-  mount KeystoneColors::Engine => "/keystone_colors"
+  mount KeystoneUi::Colors::Engine => "/keystone_ui_colors"
 end

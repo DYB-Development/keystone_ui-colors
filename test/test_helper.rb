@@ -7,7 +7,7 @@ require "rails/test_help"
 require "minitest/mock"
 
 ActiveRecord::Schema.define do
-  create_table :keystone_colors_theme_preferences, force: true do |t|
+  create_table :keystone_ui_colors_theme_preferences, force: true do |t|
     t.string :accent, null: false
     t.string :surface, null: false
     t.string :template_name

@@ -1,5 +1,45 @@
 # Changelog
 
+## [Unreleased]
+
+### Breaking
+
+Renamed from `keystone_colors` to `keystone_ui-colors`, and the namespace from
+`KeystoneColors` to `KeystoneUi::Colors`. The repo now lives at
+`DYB-Development/keystone_ui-colors`.
+
+Host apps must update:
+
+| Was | Now |
+|---|---|
+| `gem "keystone_colors"` | `gem "keystone_ui-colors"` |
+| `KeystoneColors::Engine` | `KeystoneUi::Colors::Engine` |
+| `KeystoneColors::CurrentPalette` | `KeystoneUi::Colors::CurrentPalette` |
+| `KeystoneColors.configure` | `KeystoneUi::Colors.configure` |
+| `keystone_colors.settings_path` | `keystone_ui_colors.settings_path` |
+| `rails g keystone_colors:install` | `rails g keystone_ui:colors:install` |
+| `config/initializers/keystone_colors.rb` | `config/initializers/keystone_ui_colors.rb` |
+| `keystone_colors_theme_preferences` | `keystone_ui_colors_theme_preferences` |
+
+The table rename needs a migration in each host app:
+
+```ruby
+rename_table :keystone_colors_theme_preferences, :keystone_ui_colors_theme_preferences
+rename_index :keystone_ui_colors_theme_preferences,
+  "index_keystone_colors_theme_prefs_on_owner",
+  "index_keystone_ui_colors_theme_prefs_on_owner"
+```
+
+The Stimulus controller moves to
+`app/javascript/controllers/keystone_ui/colors/theme_settings_controller.js`
+(identifier `keystone-ui--colors--theme-settings`). Re-run
+`rails g keystone_ui:colors:update` and delete the old
+`controllers/keystone_colors/` directory.
+
+Unchanged: the `keystone_palette_style_tag` helper, `keystone_palette_css`, and
+`set_current_palette` keep their names. The cached session key changes to
+`:keystone_ui_colors_palette`, which causes a one-time palette rebuild per session.
+
 ## [0.1.0] - 2026-05-07
 
 Initial release.
