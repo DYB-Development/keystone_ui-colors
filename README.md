@@ -82,11 +82,25 @@ KeystoneUi::Colors.configure do |config|
   config.default_template = :ocean             # Fallback theme
   config.default_accent = "blue"               # Fallback accent color
   config.default_surface = "zinc"              # Fallback surface color
+  config.default_mode = "light"                # Fallback theme mode: "light", "dark" or "system"
   config.layout = "application"                # Layout for settings page
 end
 ```
 
 All values shown are defaults and can be omitted.
+
+## Light and Dark Mode
+
+Users choose Light, Dark or System on the settings page, and the choice is saved
+with their palette. keystone_ui renders each page in, strongest first:
+
+1. The choice made with keystone_ui's `ui_theme_toggle` in this browser.
+2. The mode the signed-in user saved.
+3. `config.default_mode`, for users who saved none and for visitors who are not signed in.
+
+Saving a mode on the settings page clears the toggle's choice in that browser, so the
+saved mode takes effect. Pages are marked through keystone_ui's
+`keystone_theme_attributes` helper on the layout's `html` tag.
 
 ## Preset Themes
 
@@ -173,7 +187,7 @@ Accepts named colors (`"blue"`) or hex values (`"#3b82f6"`) for `accent` and `su
 
 ## Updating
 
-Run the update generator to get the latest Stimulus controller:
+Run the update generator to get the latest Stimulus controller and any new migrations, then migrate:
 
 ```bash
 bin/rails generate keystone_ui:colors:update
