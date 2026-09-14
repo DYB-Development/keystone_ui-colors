@@ -44,7 +44,7 @@ module KeystoneUi
       end
 
       def preference_params
-        params.require(:theme_preference).permit(:accent, :surface, :template_name)
+        params.require(:theme_preference).permit(:accent, :surface, :template_name, :mode)
       end
     end
   end

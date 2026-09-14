@@ -108,4 +108,12 @@ class SettingsTest < ActionDispatch::IntegrationTest
     KeystoneUi::Colors::ApplicationController.remove_method(:reject_all!)
     KeystoneUi::Colors.reset_configuration!
   end
+
+  test "PATCH /keystone_ui_colors saves the chosen theme mode" do
+    patch "/keystone_ui_colors", params: {
+      theme_preference: { accent: "blue", surface: "zinc", mode: "dark" }
+    }
+
+    assert_equal "dark", user.reload.theme_preference.mode
+  end
 end
