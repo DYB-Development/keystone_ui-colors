@@ -4,7 +4,7 @@ PATH
     keystone_ui-colors (0.1.0)
       activerecord (>= 7.0)
       activesupport (>= 7.0)
-      keystone_ui (>= 0.4.1)
+      keystone_ui (>= 0.10.0)
       railties (>= 7.0)
 
 GEM
