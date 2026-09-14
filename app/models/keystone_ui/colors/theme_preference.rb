@@ -13,9 +13,12 @@ module KeystoneUi
 
       HEX_COLOR = /\A#[0-9a-fA-F]{6}\z/
 
+      MODES = %w[light dark system].freeze
+
       validate :accent_is_valid
       validate :surface_is_valid
       validates :template_name, inclusion: { in: Templates.names.map(&:to_s) }, allow_blank: true
+      validates :mode, inclusion: { in: MODES }, allow_nil: true
 
       def apply_template!(name)
         template = Templates[name]

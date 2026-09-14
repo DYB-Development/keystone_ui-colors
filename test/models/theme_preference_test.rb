@@ -55,4 +55,10 @@ class KeystoneUi::Colors::ThemePreferenceTest < ActiveSupport::TestCase
     assert_equal "stone", pref.surface
     assert_equal "forest", pref.template_name
   end
+
+  test "rejects a mode other than light, dark or system" do
+    pref = KeystoneUi::Colors::ThemePreference.new(owner: user, accent: "blue", surface: "zinc", mode: "purple")
+
+    refute pref.valid?
+  end
 end

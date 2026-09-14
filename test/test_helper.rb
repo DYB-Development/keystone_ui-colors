@@ -11,6 +11,7 @@ ActiveRecord::Schema.define do
     t.string :accent, null: false
     t.string :surface, null: false
     t.string :template_name
+    t.string :mode
     t.references :owner, polymorphic: true, null: false
     t.timestamps
   end
