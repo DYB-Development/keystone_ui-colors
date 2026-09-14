@@ -111,4 +111,15 @@ class KeystoneUi::Colors::CurrentPaletteTest < ActiveSupport::TestCase
 
     assert_equal "dark", controller.keystone_theme_mode
   end
+
+  test "uses the configured default theme mode when the owner saved none" do
+    KeystoneUi::Colors.configure { |config| config.default_mode = "system" }
+    controller = controller_class.new(user: user)
+
+    controller.set_current_palette
+
+    assert_equal "system", controller.keystone_theme_mode
+  ensure
+    KeystoneUi::Colors.reset_configuration!
+  end
 end
