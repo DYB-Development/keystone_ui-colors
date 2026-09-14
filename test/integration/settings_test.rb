@@ -140,4 +140,12 @@ class SettingsTest < ActionDispatch::IntegrationTest
 
     assert_select "input[type=radio][name='theme_preference[mode]'][value=dark]"
   end
+
+  test "GET /keystone_ui_colors selects the theme mode the user saved" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: user, accent: "blue", surface: "zinc", mode: "dark")
+
+    get "/keystone_ui_colors"
+
+    assert_select "input[name='theme_preference[mode]'][value=dark][checked]"
+  end
 end
