@@ -20,7 +20,8 @@ module KeystoneUi
           @preference.assign_attributes(
             accent: template[:accent].to_s,
             surface: template[:surface].to_s,
-            template_name: preference_params[:template_name]
+            template_name: preference_params[:template_name],
+            mode: preference_params[:mode]
           )
         else
           @preference.assign_attributes(preference_params)

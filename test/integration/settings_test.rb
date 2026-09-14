@@ -116,4 +116,12 @@ class SettingsTest < ActionDispatch::IntegrationTest
 
     assert_equal "dark", user.reload.theme_preference.mode
   end
+
+  test "PATCH /keystone_ui_colors saves the chosen theme mode along with a preset theme" do
+    patch "/keystone_ui_colors", params: {
+      theme_preference: { template_name: "forest", mode: "system" }
+    }
+
+    assert_equal "system", user.reload.theme_preference.mode
+  end
 end
