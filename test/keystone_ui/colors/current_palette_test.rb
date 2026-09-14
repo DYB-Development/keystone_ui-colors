@@ -122,4 +122,12 @@ class KeystoneUi::Colors::CurrentPaletteTest < ActiveSupport::TestCase
   ensure
     KeystoneUi::Colors.reset_configuration!
   end
+
+  test "uses the configured default theme mode when there is no current owner" do
+    controller = controller_class.new(user: nil)
+
+    controller.set_current_palette
+
+    assert_equal "light", controller.keystone_theme_mode
+  end
 end

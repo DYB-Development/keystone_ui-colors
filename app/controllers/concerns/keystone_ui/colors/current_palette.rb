@@ -15,6 +15,7 @@ module KeystoneUi
         owner = send(KeystoneUi::Colors.configuration.current_owner_method)
 
         unless owner
+          @keystone_theme_mode = KeystoneUi::Colors.configuration.default_mode
           build_palette_css(
             KeystoneUi::Colors.configuration.default_accent,
             KeystoneUi::Colors.configuration.default_surface
