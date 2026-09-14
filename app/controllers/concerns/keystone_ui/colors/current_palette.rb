@@ -8,7 +8,7 @@ module KeystoneUi
       extend ActiveSupport::Concern
 
       included do
-        helper_method :keystone_palette_css if respond_to?(:helper_method)
+        helper_method :keystone_palette_css, :keystone_theme_mode if respond_to?(:helper_method)
       end
 
       def set_current_palette

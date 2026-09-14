@@ -142,4 +142,14 @@ class KeystoneUi::Colors::CurrentPaletteTest < ActiveSupport::TestCase
 
     assert_equal "dark", cached.keystone_theme_mode
   end
+
+  test "lets views read the theme mode" do
+    helpers = []
+    Class.new do
+      define_singleton_method(:helper_method) { |*names| helpers.concat(names) }
+      include KeystoneUi::Colors::CurrentPalette
+    end
+
+    assert_includes helpers, :keystone_theme_mode
+  end
 end
