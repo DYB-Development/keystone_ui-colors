@@ -2,6 +2,17 @@
 
 ## [Unreleased]
 
+### Added
+
+- Users choose Light, Dark or System on the settings page, saved with their palette.
+- `config.default_mode` sets the mode for users who saved none and for visitors who are not signed in, and defaults to `"light"`.
+- keystone_ui renders pages in the saved or default mode, unless keystone_ui's toggle has a choice in that browser.
+
+### Upgrading
+
+- Requires keystone_ui 0.10.0 or later.
+- Run `rails g keystone_ui:colors:update` and `rails db:migrate` to add the `mode` column to `keystone_ui_colors_theme_preferences`.
+
 ### Breaking
 
 Renamed from `keystone_colors` to `keystone_ui-colors`, and the namespace from

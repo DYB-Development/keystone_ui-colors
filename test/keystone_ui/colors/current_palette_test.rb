@@ -61,6 +61,7 @@ class KeystoneUi::Colors::CurrentPaletteTest < ActiveSupport::TestCase
     assert_equal({
       accent: "emerald",
       surface: "stone",
+      mode: nil,
       updated_at: pref.updated_at.to_i
     }, session[:keystone_ui_colors_palette])
 
@@ -101,5 +102,54 @@ class KeystoneUi::Colors::CurrentPaletteTest < ActiveSupport::TestCase
     css = controller.keystone_palette_css
     assert_includes css, "--color-accent-500: #e11d48"
     assert_includes css, "--color-surface-500: #44403c"
+  end
+
+  test "knows the theme mode the owner saved" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: user, accent: "blue", surface: "zinc", mode: "dark")
+    controller = controller_class.new(user: user)
+
+    controller.set_current_palette
+
+    assert_equal "dark", controller.keystone_theme_mode
+  end
+
+  test "uses the configured default theme mode when the owner saved none" do
+    KeystoneUi::Colors.configure { |config| config.default_mode = "system" }
+    controller = controller_class.new(user: user)
+
+    controller.set_current_palette
+
+    assert_equal "system", controller.keystone_theme_mode
+  ensure
+    KeystoneUi::Colors.reset_configuration!
+  end
+
+  test "uses the configured default theme mode when there is no current owner" do
+    controller = controller_class.new(user: nil)
+
+    controller.set_current_palette
+
+    assert_equal "light", controller.keystone_theme_mode
+  end
+
+  test "knows the saved theme mode when the palette comes from the session cache" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: user, accent: "blue", surface: "zinc", mode: "dark")
+    session = {}
+    controller_class.new(user: user, session: session).set_current_palette
+    cached = controller_class.new(user: user, session: session)
+
+    cached.set_current_palette
+
+    assert_equal "dark", cached.keystone_theme_mode
+  end
+
+  test "lets views read the theme mode" do
+    helpers = []
+    Class.new do
+      define_singleton_method(:helper_method) { |*names| helpers.concat(names) }
+      include KeystoneUi::Colors::CurrentPalette
+    end
+
+    assert_includes helpers, :keystone_theme_mode
   end
 end

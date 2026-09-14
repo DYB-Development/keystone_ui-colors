@@ -26,6 +26,12 @@ class KeystoneUi::Colors::Generators::InstallGeneratorTest < ActiveSupport::Test
     assert_includes content, "create_table :keystone_ui_colors_theme_preferences"
   end
 
+  test "the migration gives each preference a theme mode" do
+    content = File.read(Dir.glob("#{destination}/db/migrate/*_create_keystone_ui_colors_theme_preferences.rb").first)
+
+    assert_includes content, "t.string :mode"
+  end
+
   test "prints setup instructions" do
     output = capture_stdout do
       Rails::Generators.invoke("keystone_ui:colors:install", [], destination_root: destination, skip: true)

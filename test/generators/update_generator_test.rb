@@ -24,4 +24,11 @@ class KeystoneUi::Colors::Generators::UpdateGeneratorTest < ActiveSupport::TestC
     assert File.exist?(js_path)
     assert_includes File.read(js_path), "@hotwired/stimulus"
   end
+
+  test "adds a migration giving existing preferences a theme mode" do
+    Rails::Generators.invoke("keystone_ui:colors:update", [], destination_root: destination, quiet: true)
+
+    migration = Dir.glob("#{destination}/db/migrate/*_add_mode_to_keystone_ui_colors_theme_preferences.rb").first
+    assert_includes File.read(migration.to_s), "add_column :keystone_ui_colors_theme_preferences, :mode, :string"
+  end
 end

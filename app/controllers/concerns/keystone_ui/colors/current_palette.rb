@@ -8,13 +8,14 @@ module KeystoneUi
       extend ActiveSupport::Concern
 
       included do
-        helper_method :keystone_palette_css if respond_to?(:helper_method)
+        helper_method :keystone_palette_css, :keystone_theme_mode if respond_to?(:helper_method)
       end
 
       def set_current_palette
         owner = send(KeystoneUi::Colors.configuration.current_owner_method)
 
         unless owner
+          @keystone_theme_mode = KeystoneUi::Colors.configuration.default_mode
           build_palette_css(
             KeystoneUi::Colors.configuration.default_accent,
             KeystoneUi::Colors.configuration.default_surface
@@ -25,11 +26,13 @@ module KeystoneUi
         cached = session[:keystone_ui_colors_palette]
 
         if cached && !stale_cache?(owner, cached)
+          @keystone_theme_mode = cached[:mode] || KeystoneUi::Colors.configuration.default_mode
           build_palette_css(cached[:accent], cached[:surface])
           return
         end
 
         preference = KeystoneUi::Colors::ThemePreference.find_by(owner: owner)
+        @keystone_theme_mode = preference&.mode || KeystoneUi::Colors.configuration.default_mode
         accent = preference&.accent || KeystoneUi::Colors.configuration.default_accent
         surface = preference&.surface || KeystoneUi::Colors.configuration.default_surface
 
@@ -39,6 +42,7 @@ module KeystoneUi
           session[:keystone_ui_colors_palette] = {
             accent: preference.accent,
             surface: preference.surface,
+            mode: preference.mode,
             updated_at: preference.updated_at.to_i
           }
         end
@@ -46,6 +50,10 @@ module KeystoneUi
 
       def keystone_palette_css
         @keystone_palette_css
+      end
+
+      def keystone_theme_mode
+        @keystone_theme_mode
       end
 
       private

@@ -17,4 +17,8 @@ class KeystoneUi::Colors::ConfigurationTest < ActiveSupport::TestCase
     assert_equal "zinc", config.default_surface
     assert_equal "application", config.layout
   end
+
+  test "defaults the theme mode to light" do
+    assert_equal "light", KeystoneUi::Colors::Configuration.new.default_mode
+  end
 end

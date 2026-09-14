@@ -49,4 +49,12 @@ class ColorSettingsTest < ApplicationSystemTestCase
 
     assert_css "[data-controller='color-picker']", count: 2
   end
+
+  test "a signed-in user's saved theme mode marks the page" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: user, accent: "blue", surface: "zinc", mode: "dark")
+
+    visit "/keystone_ui_colors"
+
+    assert_selector :xpath, "/html[@data-theme='dark']", visible: :all
+  end
 end

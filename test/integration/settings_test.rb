@@ -108,4 +108,50 @@ class SettingsTest < ActionDispatch::IntegrationTest
     KeystoneUi::Colors::ApplicationController.remove_method(:reject_all!)
     KeystoneUi::Colors.reset_configuration!
   end
+
+  test "PATCH /keystone_ui_colors saves the chosen theme mode" do
+    patch "/keystone_ui_colors", params: {
+      theme_preference: { accent: "blue", surface: "zinc", mode: "dark" }
+    }
+
+    assert_equal "dark", user.reload.theme_preference.mode
+  end
+
+  test "PATCH /keystone_ui_colors saves the chosen theme mode along with a preset theme" do
+    patch "/keystone_ui_colors", params: {
+      theme_preference: { template_name: "forest", mode: "system" }
+    }
+
+    assert_equal "system", user.reload.theme_preference.mode
+  end
+
+  test "PATCH /keystone_ui_colors clears the toggle's choice in this browser" do
+    cookies[KeystoneUi::ThemeChoice::COOKIE] = "dark"
+
+    patch "/keystone_ui_colors", params: {
+      theme_preference: { accent: "blue", surface: "zinc", mode: "light" }
+    }
+
+    assert_predicate cookies[KeystoneUi::ThemeChoice::COOKIE], :blank?
+  end
+
+  test "GET /keystone_ui_colors offers a dark theme mode" do
+    get "/keystone_ui_colors"
+
+    assert_select "input[type=radio][name='theme_preference[mode]'][value=dark]"
+  end
+
+  test "GET /keystone_ui_colors selects the theme mode the user saved" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: user, accent: "blue", surface: "zinc", mode: "dark")
+
+    get "/keystone_ui_colors"
+
+    assert_select "input[name='theme_preference[mode]'][value=dark][checked]"
+  end
+
+  test "GET /keystone_ui_colors selects the configured default theme mode when the user saved none" do
+    get "/keystone_ui_colors"
+
+    assert_select "input[name='theme_preference[mode]'][value=light][checked]"
+  end
 end
