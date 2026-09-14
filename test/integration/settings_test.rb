@@ -134,4 +134,10 @@ class SettingsTest < ActionDispatch::IntegrationTest
 
     assert_predicate cookies[KeystoneUi::ThemeChoice::COOKIE], :blank?
   end
+
+  test "GET /keystone_ui_colors offers a dark theme mode" do
+    get "/keystone_ui_colors"
+
+    assert_select "input[type=radio][name='theme_preference[mode]'][value=dark]"
+  end
 end

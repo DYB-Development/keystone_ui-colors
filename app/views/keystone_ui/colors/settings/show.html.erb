@@ -83,6 +83,14 @@
         </div>
       <% end %>
 
+      <%= ui_section(title: "Mode", spacing: :sm) do %>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+          <% KeystoneUi::Colors::ThemePreference::MODES.each do |mode| %>
+            <%= ui_radio_card(name: "theme_preference[mode]", value: mode, label: mode.capitalize) %>
+          <% end %>
+        </div>
+      <% end %>
+
       <div>
         <%= ui_button(label: "Save", type: :submit) %>
       </div>
