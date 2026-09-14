@@ -11,7 +11,7 @@ module KeystoneUi
 
         source_root File.expand_path("../../../../../app/javascript/keystone_ui/colors", __dir__)
 
-        desc "Updates KeystoneUi::Colors assets (Stimulus controller)."
+        desc "Updates KeystoneUi::Colors: copies the Stimulus controller and adds new migrations."
 
         def add_mode_migration
           migration_template(
