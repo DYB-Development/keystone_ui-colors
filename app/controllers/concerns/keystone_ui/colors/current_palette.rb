@@ -26,6 +26,7 @@ module KeystoneUi
         cached = session[:keystone_ui_colors_palette]
 
         if cached && !stale_cache?(owner, cached)
+          @keystone_theme_mode = cached[:mode] || KeystoneUi::Colors.configuration.default_mode
           build_palette_css(cached[:accent], cached[:surface])
           return
         end
@@ -41,6 +42,7 @@ module KeystoneUi
           session[:keystone_ui_colors_palette] = {
             accent: preference.accent,
             surface: preference.surface,
+            mode: preference.mode,
             updated_at: preference.updated_at.to_i
           }
         end

@@ -61,6 +61,7 @@ class KeystoneUi::Colors::CurrentPaletteTest < ActiveSupport::TestCase
     assert_equal({
       accent: "emerald",
       surface: "stone",
+      mode: nil,
       updated_at: pref.updated_at.to_i
     }, session[:keystone_ui_colors_palette])
 
@@ -129,5 +130,16 @@ class KeystoneUi::Colors::CurrentPaletteTest < ActiveSupport::TestCase
     controller.set_current_palette
 
     assert_equal "light", controller.keystone_theme_mode
+  end
+
+  test "knows the saved theme mode when the palette comes from the session cache" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: user, accent: "blue", surface: "zinc", mode: "dark")
+    session = {}
+    controller_class.new(user: user, session: session).set_current_palette
+    cached = controller_class.new(user: user, session: session)
+
+    cached.set_current_palette
+
+    assert_equal "dark", cached.keystone_theme_mode
   end
 end
