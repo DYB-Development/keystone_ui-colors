@@ -124,4 +124,14 @@ class SettingsTest < ActionDispatch::IntegrationTest
 
     assert_equal "system", user.reload.theme_preference.mode
   end
+
+  test "PATCH /keystone_ui_colors clears the toggle's choice in this browser" do
+    cookies[KeystoneUi::ThemeChoice::COOKIE] = "dark"
+
+    patch "/keystone_ui_colors", params: {
+      theme_preference: { accent: "blue", surface: "zinc", mode: "light" }
+    }
+
+    assert_predicate cookies[KeystoneUi::ThemeChoice::COOKIE], :blank?
+  end
 end

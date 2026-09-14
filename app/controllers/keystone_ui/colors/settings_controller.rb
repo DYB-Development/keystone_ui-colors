@@ -28,6 +28,7 @@ module KeystoneUi
         end
 
         if @preference.save
+          cookies.delete(KeystoneUi::ThemeChoice::COOKIE)
           redirect_to keystone_ui_colors.settings_path, notice: "Color settings updated."
         else
           render :show, status: :unprocessable_entity
