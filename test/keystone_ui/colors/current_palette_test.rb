@@ -102,4 +102,13 @@ class KeystoneUi::Colors::CurrentPaletteTest < ActiveSupport::TestCase
     assert_includes css, "--color-accent-500: #e11d48"
     assert_includes css, "--color-surface-500: #44403c"
   end
+
+  test "knows the theme mode the owner saved" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: user, accent: "blue", surface: "zinc", mode: "dark")
+    controller = controller_class.new(user: user)
+
+    controller.set_current_palette
+
+    assert_equal "dark", controller.keystone_theme_mode
+  end
 end

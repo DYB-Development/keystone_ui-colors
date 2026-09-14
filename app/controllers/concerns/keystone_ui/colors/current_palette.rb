@@ -30,6 +30,7 @@ module KeystoneUi
         end
 
         preference = KeystoneUi::Colors::ThemePreference.find_by(owner: owner)
+        @keystone_theme_mode = preference&.mode
         accent = preference&.accent || KeystoneUi::Colors.configuration.default_accent
         surface = preference&.surface || KeystoneUi::Colors.configuration.default_surface
 
@@ -46,6 +47,10 @@ module KeystoneUi
 
       def keystone_palette_css
         @keystone_palette_css
+      end
+
+      def keystone_theme_mode
+        @keystone_theme_mode
       end
 
       private
