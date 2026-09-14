@@ -8,4 +8,8 @@ class KeystoneUi::Colors::ThemeModeSupplierTest < ActiveSupport::TestCase
 
     assert_equal "dark", KeystoneUi.configuration.supplied_theme_mode(view)
   end
+
+  test "supplies the configured default theme mode for a view that does not know one" do
+    assert_equal "light", KeystoneUi.configuration.supplied_theme_mode(Object.new)
+  end
 end

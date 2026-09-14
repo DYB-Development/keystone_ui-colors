@@ -7,7 +7,9 @@ module KeystoneUi
 
       initializer "keystone_ui.colors.theme_mode" do
         KeystoneUi.configure do |config|
-          config.theme_mode_supplier = ->(view) { view.keystone_theme_mode }
+          config.theme_mode_supplier = lambda do |view|
+            view.respond_to?(:keystone_theme_mode) ? view.keystone_theme_mode : KeystoneUi::Colors.configuration.default_mode
+          end
         end
       end
 
