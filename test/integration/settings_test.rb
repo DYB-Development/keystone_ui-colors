@@ -148,4 +148,10 @@ class SettingsTest < ActionDispatch::IntegrationTest
 
     assert_select "input[name='theme_preference[mode]'][value=dark][checked]"
   end
+
+  test "GET /keystone_ui_colors selects the configured default theme mode when the user saved none" do
+    get "/keystone_ui_colors"
+
+    assert_select "input[name='theme_preference[mode]'][value=light][checked]"
+  end
 end
