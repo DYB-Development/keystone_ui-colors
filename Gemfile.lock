@@ -4,7 +4,7 @@ PATH
     keystone_ui-colors (0.2.0)
       activerecord (>= 7.0)
       activesupport (>= 7.0)
-      keystone_ui (>= 0.10.0)
+      keystone_ui (>= 0.11.0)
       railties (>= 7.0)
 
 GEM
@@ -117,10 +117,10 @@ GEM
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     json (2.19.1)
-    keystone_ui (0.10.0)
-      keystone_ui-styles (>= 0.1.0)
+    keystone_ui (0.12.0)
+      keystone_ui-styles (>= 0.2.0)
       view_component (>= 2.0, < 5)
-    keystone_ui-styles (0.1.0)
+    keystone_ui-styles (0.2.0)
       railties (>= 7.0)
     language_server-protocol (3.17.0.5)
     lint_roller (1.1.0)
