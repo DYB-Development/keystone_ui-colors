@@ -13,26 +13,16 @@ module KeystoneUi
       end
 
       def update
-        @preference = theme_preference
+        result = PickColours.new(owner: current_owner, values: preference_params).call
 
-        if preference_params[:template_name].present?
-          template = Templates[preference_params[:template_name]]
-          @preference.assign_attributes(
-            accent: template[:accent].to_s,
-            surface: template[:surface].to_s,
-            template_name: preference_params[:template_name],
-            mode: preference_params[:mode]
-          )
-        else
-          @preference.assign_attributes(preference_params)
+        unless result.ok?
+          @preference = theme_preference
+          @preference.assign_attributes(preference_params.slice(:accent, :surface, :mode))
+          return render :show, status: :unprocessable_entity
         end
 
-        if @preference.save
-          cookies.delete(KeystoneUi::ThemeChoice::COOKIE)
-          redirect_to keystone_ui_colors.settings_path, notice: "Color settings updated."
-        else
-          render :show, status: :unprocessable_entity
-        end
+        cookies.delete(KeystoneUi::ThemeChoice::COOKIE)
+        redirect_to keystone_ui_colors.settings_path, notice: "Color settings updated."
       end
 
       private
