@@ -4,7 +4,6 @@ module KeystoneUi
   module Colors
     class SettingsController < ApplicationController
       def show
-        @preference = theme_preference
       end
 
       def destroy
@@ -13,15 +12,11 @@ module KeystoneUi
       end
 
       def update
-        result = PickColours.new(owner: current_owner, values: preference_params).call
+        result = PickColours.new(person: current_owner, account: nil, values: preference_params).call
 
-        unless result.ok?
-          @preference = theme_preference
-          @preference.assign_attributes(preference_params.slice(:accent, :surface, :mode))
-          return render :show, status: :unprocessable_entity
-        end
+        return render :show, status: :unprocessable_entity unless result.ok?
 
-        cookies.delete(KeystoneUi::ThemeChoice::COOKIE)
+        ForgetTheThemeChoice.new(controller: self).call
         redirect_to keystone_ui_colors.settings_path, notice: "Color settings updated."
       end
 
@@ -31,10 +26,6 @@ module KeystoneUi
 
       def current_owner
         send(KeystoneUi::Colors.configuration.current_owner_method)
-      end
-
-      def theme_preference
-        ThemePreference.find_or_initialize_by(owner: current_owner)
       end
 
       def preference_params
