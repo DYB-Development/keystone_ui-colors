@@ -1,4 +1,6 @@
 <%
+  preference = KeystoneUi::Colors::ThemePreference.find_or_initialize_by(owner: person)
+
   current_accent_hex = if preference.accent&.start_with?("#")
     preference.accent
   else
@@ -19,7 +21,6 @@
   <%= form_with(
     url: url,
     method: :patch,
-    scope: :theme_preference,
     data: { turbo: false, controller: "keystone-ui--colors--theme-settings", selected_template: selected_template }
   ) do |form| %>
     <div style="display: flex; flex-direction: column; gap: 2rem;">
@@ -30,7 +31,7 @@
             <% accent_hex = KeystoneUi::Colors::Palettes.accent(template[:accent])[500] %>
             <% surface_hex = KeystoneUi::Colors::Palettes.surface(template[:surface])[500] %>
             <%= ui_option_card(
-              name: "theme_preference[template_name]",
+              name: "template_name",
               value: name,
               selected: selected_template == name.to_s,
               input_data: {
@@ -49,7 +50,7 @@
             <% end %>
           <% end %>
           <%= ui_option_card(
-            name: "theme_preference[template_name]",
+            name: "template_name",
             value: "",
             selected: custom_selected,
             input_data: {
@@ -67,20 +68,20 @@
 
       <%= ui_section(title: "Accent Color", spacing: :sm) do %>
         <div data-keystone-ui--colors--theme-settings-target="accentPicker">
-          <%= ui_color_picker(name: "theme_preference[accent]", value: current_accent_hex) %>
+          <%= ui_color_picker(name: "accent", value: current_accent_hex) %>
         </div>
       <% end %>
 
       <%= ui_section(title: "Surface", spacing: :sm) do %>
         <div data-keystone-ui--colors--theme-settings-target="surfacePicker">
-          <%= ui_color_picker(name: "theme_preference[surface]", value: current_surface_hex) %>
+          <%= ui_color_picker(name: "surface", value: current_surface_hex) %>
         </div>
       <% end %>
 
       <%= ui_section(title: "Mode", spacing: :sm) do %>
         <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
           <% KeystoneUi::Colors::ThemePreference::MODES.each do |mode| %>
-            <%= ui_radio_card(name: "theme_preference[mode]", value: mode, label: mode.capitalize, checked: (preference.mode || KeystoneUi::Colors.configuration.default_mode) == mode) %>
+            <%= ui_radio_card(name: "mode", value: mode, label: mode.capitalize, checked: (preference.mode || KeystoneUi::Colors.configuration.default_mode) == mode) %>
           <% end %>
         </div>
       <% end %>
