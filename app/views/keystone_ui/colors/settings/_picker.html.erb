@@ -19,7 +19,7 @@
 
 <%= ui_panel(padding: :lg) do %>
   <%= form_with(
-    url: url,
+    url: submit_url,
     method: :patch,
     data: { turbo: false, controller: "keystone-ui--colors--theme-settings", selected_template: selected_template }
   ) do |form| %>
