@@ -22,7 +22,7 @@ class ColorSettingsTest < ApplicationSystemTestCase
   test "selects a theme preset and saves" do
     visit "/keystone_ui_colors"
 
-    choose("theme_preference[template_name]", option: "forest")
+    choose("template_name", option: "forest")
     click_button "Save"
 
     assert_text "Color settings updated."
@@ -35,7 +35,7 @@ class ColorSettingsTest < ApplicationSystemTestCase
   test "selects the default theme preset and saves" do
     visit "/keystone_ui_colors"
 
-    choose("theme_preference[template_name]", option: "default")
+    choose("template_name", option: "default")
     click_button "Save"
 
     pref = user.reload.theme_preference

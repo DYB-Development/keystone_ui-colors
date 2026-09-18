@@ -27,6 +27,8 @@ module KeystoneUi
 
       private
 
+      helper_method :current_owner
+
       def current_owner
         send(KeystoneUi::Colors.configuration.current_owner_method)
       end
@@ -36,7 +38,7 @@ module KeystoneUi
       end
 
       def preference_params
-        params.require(:theme_preference).permit(:accent, :surface, :template_name, :mode)
+        params.permit(:accent, :surface, :template_name, :mode).to_h.symbolize_keys
       end
     end
   end

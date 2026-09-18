@@ -4,4 +4,4 @@
   <%= ui_alert(message: flash[:notice], type: :success) %>
 <% end %>
 
-<%= render partial: "keystone_ui/colors/settings/picker", locals: {preference: @preference, url: keystone_ui_colors.settings_path} %>
+<%= render partial: "keystone_ui/colors/settings/picker", locals: {person: current_owner, account: nil, url: keystone_ui_colors.settings_path} %>

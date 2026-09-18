@@ -44,9 +44,7 @@ class SettingsTest < ActionDispatch::IntegrationTest
   end
 
   test "PATCH /keystone_ui_colors creates a preference with valid accent and surface" do
-    patch "/keystone_ui_colors", params: {
-      theme_preference: { accent: "violet", surface: "zinc" }
-    }
+    patch "/keystone_ui_colors", params: { accent: "violet", surface: "zinc" }
 
     assert_redirected_to "/keystone_ui_colors/"
     pref = user.reload.theme_preference
@@ -55,9 +53,7 @@ class SettingsTest < ActionDispatch::IntegrationTest
   end
 
   test "PATCH /keystone_ui_colors saves custom hex colors" do
-    patch "/keystone_ui_colors", params: {
-      theme_preference: { accent: "#e11d48", surface: "#44403c" }
-    }
+    patch "/keystone_ui_colors", params: { accent: "#e11d48", surface: "#44403c" }
 
     assert_redirected_to "/keystone_ui_colors/"
     pref = user.reload.theme_preference
@@ -66,9 +62,7 @@ class SettingsTest < ActionDispatch::IntegrationTest
   end
 
   test "PATCH /keystone_ui_colors applies a template when template_name is provided" do
-    patch "/keystone_ui_colors", params: {
-      theme_preference: { template_name: "forest" }
-    }
+    patch "/keystone_ui_colors", params: { template_name: "forest" }
 
     assert_redirected_to "/keystone_ui_colors/"
     pref = user.reload.theme_preference
@@ -110,17 +104,13 @@ class SettingsTest < ActionDispatch::IntegrationTest
   end
 
   test "PATCH /keystone_ui_colors saves the chosen theme mode" do
-    patch "/keystone_ui_colors", params: {
-      theme_preference: { accent: "blue", surface: "zinc", mode: "dark" }
-    }
+    patch "/keystone_ui_colors", params: { accent: "blue", surface: "zinc", mode: "dark" }
 
     assert_equal "dark", user.reload.theme_preference.mode
   end
 
   test "PATCH /keystone_ui_colors saves the chosen theme mode along with a preset theme" do
-    patch "/keystone_ui_colors", params: {
-      theme_preference: { template_name: "forest", mode: "system" }
-    }
+    patch "/keystone_ui_colors", params: { template_name: "forest", mode: "system" }
 
     assert_equal "system", user.reload.theme_preference.mode
   end
@@ -128,9 +118,7 @@ class SettingsTest < ActionDispatch::IntegrationTest
   test "PATCH /keystone_ui_colors clears the toggle's choice in this browser" do
     cookies[KeystoneUi::ThemeChoice::COOKIE] = "dark"
 
-    patch "/keystone_ui_colors", params: {
-      theme_preference: { accent: "blue", surface: "zinc", mode: "light" }
-    }
+    patch "/keystone_ui_colors", params: { accent: "blue", surface: "zinc", mode: "light" }
 
     assert_predicate cookies[KeystoneUi::ThemeChoice::COOKIE], :blank?
   end
@@ -138,7 +126,7 @@ class SettingsTest < ActionDispatch::IntegrationTest
   test "GET /keystone_ui_colors offers a dark theme mode" do
     get "/keystone_ui_colors"
 
-    assert_select "input[type=radio][name='theme_preference[mode]'][value=dark]"
+    assert_select "input[type=radio][name='mode'][value=dark]"
   end
 
   test "GET /keystone_ui_colors selects the theme mode the user saved" do
@@ -146,12 +134,12 @@ class SettingsTest < ActionDispatch::IntegrationTest
 
     get "/keystone_ui_colors"
 
-    assert_select "input[name='theme_preference[mode]'][value=dark][checked]"
+    assert_select "input[name='mode'][value=dark][checked]"
   end
 
   test "GET /keystone_ui_colors selects the configured default theme mode when the user saved none" do
     get "/keystone_ui_colors"
 
-    assert_select "input[name='theme_preference[mode]'][value=light][checked]"
+    assert_select "input[name='mode'][value=light][checked]"
   end
 end
