@@ -36,4 +36,12 @@ class KeystoneUi::Colors::PickColoursTest < ActiveSupport::TestCase
 
     assert_equal "blue", KeystoneUi::Colors::ThemePreference.find_by(owner: user).accent
   end
+
+  test "a host still building it with the owner keeps working" do
+    user = User.create!(name: "Test")
+
+    KeystoneUi::Colors::PickColours.new(owner: user, values: { template_name: "forest" }).call
+
+    assert_equal KeystoneUi::Colors::Templates[:forest][:accent].to_s, KeystoneUi::Colors::ThemePreference.find_by(owner: user).accent
+  end
 end
