@@ -3,6 +3,14 @@
 require "test_helper"
 
 class KeystoneUi::Colors::PickColoursTest < ActiveSupport::TestCase
+  test "an object built with the person keeps the colours on that person" do
+    user = User.create!(name: "Test")
+
+    KeystoneUi::Colors::PickColours.new(person: user, account: :an_account, values: { template_name: "ocean" }).call
+
+    assert_equal KeystoneUi::Colors::Templates[:ocean][:accent].to_s, KeystoneUi::Colors::ThemePreference.find_by(owner: user).accent
+  end
+
   test "picking a preset keeps that preset's accent on the person" do
     user = User.create!(name: "Test")
 
