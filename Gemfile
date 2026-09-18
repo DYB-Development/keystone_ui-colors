@@ -11,3 +11,6 @@ gem "rubocop-rails-omakase", require: false
 
 # The contract this gem is checked against, in development only
 gem "hub_kernel", github: "DYB-Development/hub_kernel", group: :development
+
+# json 3.0.2 broke ActiveSupport JSON decoding
+gem "json", "~> 2.21", ">= 2.21.2"
