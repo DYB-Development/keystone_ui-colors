@@ -3,6 +3,14 @@
 require "test_helper"
 
 class KeystoneUi::Colors::PickColoursTest < ActiveSupport::TestCase
+  test "an object built with the person keeps the colours on that person" do
+    user = User.create!(name: "Test")
+
+    KeystoneUi::Colors::PickColours.new(person: user, account: :an_account, values: { template_name: "ocean" }).call
+
+    assert_equal KeystoneUi::Colors::Templates[:ocean][:accent].to_s, KeystoneUi::Colors::ThemePreference.find_by(owner: user).accent
+  end
+
   test "picking a preset keeps that preset's accent on the person" do
     user = User.create!(name: "Test")
 
@@ -27,5 +35,13 @@ class KeystoneUi::Colors::PickColoursTest < ActiveSupport::TestCase
     KeystoneUi::Colors::PickColours.new(owner: user, values: { accent: "neon", surface: "slate" }).call
 
     assert_equal "blue", KeystoneUi::Colors::ThemePreference.find_by(owner: user).accent
+  end
+
+  test "a host still building it with the owner keeps working" do
+    user = User.create!(name: "Test")
+
+    KeystoneUi::Colors::PickColours.new(owner: user, values: { template_name: "forest" }).call
+
+    assert_equal KeystoneUi::Colors::Templates[:forest][:accent].to_s, KeystoneUi::Colors::ThemePreference.find_by(owner: user).accent
   end
 end

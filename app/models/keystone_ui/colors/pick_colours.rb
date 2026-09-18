@@ -3,8 +3,9 @@
 module KeystoneUi
   module Colors
     class PickColours
-      def initialize(owner:, values:)
-        @owner = owner
+      def initialize(values:, person: nil, account: nil, owner: nil)
+        @owner = person || owner
+        @account = account
         @values = values
       end
 
