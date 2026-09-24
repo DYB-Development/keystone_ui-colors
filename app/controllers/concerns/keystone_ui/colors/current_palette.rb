@@ -24,6 +24,7 @@ module KeystoneUi
 
         account = keystone_account
         return apply_account_palette(owner, account) if account
+        return apply_own_mode_only(owner) unless KeystoneUi::Colors.configuration.account_colors
 
         cached = session[:keystone_ui_colors_palette]
 
@@ -65,6 +66,11 @@ module KeystoneUi
         return write_palette(nil) unless KeystoneUi::Colors.configuration.account_colors
 
         write_palette(members_choose ? own || account_preference : account_preference)
+      end
+
+      def apply_own_mode_only(owner)
+        @keystone_theme_mode = KeystoneUi::Colors::ThemePreference.find_by(owner: owner)&.mode || KeystoneUi::Colors.configuration.default_mode
+        write_palette(nil)
       end
 
       def apply_host_palette
