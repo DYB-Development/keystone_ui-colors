@@ -48,7 +48,7 @@ module KeystoneUi
         private
 
         def column_migrated?(column)
-          Dir[File.join(destination_root, "db/migrate/*.rb")].any? do |migration|
+          Dir[File.join(destination_root, "db/migrate/*_keystone_ui_colors_theme_preferences.rb")].any? do |migration|
             File.read(migration).match?(/t\.\w+ :#{column}\b/)
           end
         end

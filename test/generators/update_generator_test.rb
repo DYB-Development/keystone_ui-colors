@@ -58,4 +58,17 @@ class KeystoneUi::Colors::Generators::UpdateGeneratorTest < ActiveSupport::TestC
 
     assert_empty Dir.glob("#{destination}/db/migrate/*_add_mode_to_keystone_ui_colors_theme_preferences.rb")
   end
+
+  test "still adds the mode migration when only another table has a mode column" do
+    FileUtils.mkdir_p("#{destination}/db/migrate")
+    File.write("#{destination}/db/migrate/20260101000000_create_reports.rb", <<~RUBY)
+      create_table :reports do |t|
+        t.string :mode
+      end
+    RUBY
+
+    Rails::Generators.invoke("keystone_ui:colors:update", [], destination_root: destination, quiet: true)
+
+    refute_empty Dir.glob("#{destination}/db/migrate/*_add_mode_to_keystone_ui_colors_theme_preferences.rb")
+  end
 end
