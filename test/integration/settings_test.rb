@@ -115,6 +115,12 @@ class SettingsTest < ActionDispatch::IntegrationTest
     assert_equal "system", user.reload.theme_preference.mode
   end
 
+  test "PATCH /keystone_ui_colors saves custom as the theme mode" do
+    patch "/keystone_ui_colors", params: { accent: "blue", surface: "#f5e6c8", mode: "custom" }
+
+    assert_equal "custom", user.reload.theme_preference.mode
+  end
+
   test "PATCH /keystone_ui_colors clears the toggle's choice in this browser" do
     cookies[KeystoneUi::ThemeChoice::COOKIE] = "dark"
 
