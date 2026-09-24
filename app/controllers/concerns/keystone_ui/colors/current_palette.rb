@@ -28,7 +28,11 @@ module KeystoneUi
 
         if cached && !stale_cache?(owner, cached)
           @keystone_theme_mode = cached[:mode] || KeystoneUi::Colors.configuration.default_mode
-          build_palette_css(cached[:accent], cached[:surface])
+          build_palette_css(
+            cached[:accent],
+            cached[:surface],
+            KeystoneUi::Colors::CustomColours.new(template_name: cached[:template_name], surface: cached[:surface], text: cached[:text])
+          )
           return
         end
 
@@ -45,6 +49,8 @@ module KeystoneUi
             accent: preference.accent,
             surface: preference.surface,
             mode: preference.mode,
+            template_name: preference.template_name,
+            text: preference.text,
             updated_at: preference.updated_at.to_i
           }
         end

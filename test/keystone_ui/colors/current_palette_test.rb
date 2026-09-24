@@ -62,6 +62,8 @@ class KeystoneUi::Colors::CurrentPaletteTest < ActiveSupport::TestCase
       accent: "emerald",
       surface: "stone",
       mode: nil,
+      template_name: nil,
+      text: nil,
       updated_at: pref.updated_at.to_i
     }, session[:keystone_ui_colors_palette])
 
@@ -177,5 +179,16 @@ class KeystoneUi::Colors::CurrentPaletteTest < ActiveSupport::TestCase
     controller.set_current_palette
 
     assert_includes controller.keystone_palette_css, "--color-custom-background: #{KeystoneUi::Colors.configuration.default_background}"
+  end
+
+  test "writes the custom text colour on a request served from the session cache" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: user, accent: "#e11d48", surface: "#f5e6c8", text: "#3b2f1e", template_name: "")
+    session = {}
+    controller_class.new(user: user, session: session).set_current_palette
+    cached = controller_class.new(user: user, session: session)
+
+    cached.set_current_palette
+
+    assert_includes cached.keystone_palette_css, "--color-custom-text: #3b2f1e"
   end
 end
