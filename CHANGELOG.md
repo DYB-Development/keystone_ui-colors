@@ -4,6 +4,10 @@
 
 ### Fixed
 
+- The update generator adds no migration for a column the app's colour preference migrations already create, so an app installed with the mode or text column no longer gets a migration that fails on it.
+
+### Fixed
+
 - A palette cached in a cookie session is served without reading the preference again, where before the cache's keys came back as strings and every page read the database.
 
 ## [0.4.0] - 2026-09-24
