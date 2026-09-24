@@ -29,7 +29,7 @@ module KeystoneUi
       end
 
       def preference_params
-        params.permit(:accent, :surface, :template_name, :mode).to_h.symbolize_keys
+        params.permit(:accent, :surface, :text, :template_name, :mode).to_h.symbolize_keys
       end
     end
   end

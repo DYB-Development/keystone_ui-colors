@@ -21,4 +21,12 @@ class KeystoneUi::Colors::ConfigurationTest < ActiveSupport::TestCase
   test "defaults the theme mode to light" do
     assert_equal "light", KeystoneUi::Colors::Configuration.new.default_mode
   end
+
+  test "defaults a custom page's background to #ffffff" do
+    assert_equal "#ffffff", KeystoneUi::Colors::Configuration.new.default_background
+  end
+
+  test "defaults a custom page's text to #18181b" do
+    assert_equal "#18181b", KeystoneUi::Colors::Configuration.new.default_text
+  end
 end

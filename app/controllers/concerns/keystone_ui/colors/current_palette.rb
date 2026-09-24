@@ -18,7 +18,8 @@ module KeystoneUi
           @keystone_theme_mode = KeystoneUi::Colors.configuration.default_mode
           build_palette_css(
             KeystoneUi::Colors.configuration.default_accent,
-            KeystoneUi::Colors.configuration.default_surface
+            KeystoneUi::Colors.configuration.default_surface,
+            KeystoneUi::Colors::CustomColours.new(template_name: nil, surface: nil, text: nil)
           )
           return
         end
@@ -27,7 +28,11 @@ module KeystoneUi
 
         if cached && !stale_cache?(owner, cached)
           @keystone_theme_mode = cached[:mode] || KeystoneUi::Colors.configuration.default_mode
-          build_palette_css(cached[:accent], cached[:surface])
+          build_palette_css(
+            cached[:accent],
+            cached[:surface],
+            KeystoneUi::Colors::CustomColours.new(template_name: cached[:template_name], surface: cached[:surface], text: cached[:text])
+          )
           return
         end
 
@@ -36,13 +41,16 @@ module KeystoneUi
         accent = preference&.accent || KeystoneUi::Colors.configuration.default_accent
         surface = preference&.surface || KeystoneUi::Colors.configuration.default_surface
 
-        build_palette_css(accent, surface)
+        custom = KeystoneUi::Colors::CustomColours.new(template_name: preference&.template_name, surface: surface, text: preference&.text)
+        build_palette_css(accent, surface, custom)
 
         if preference
           session[:keystone_ui_colors_palette] = {
             accent: preference.accent,
             surface: preference.surface,
             mode: preference.mode,
+            template_name: preference.template_name,
+            text: preference.text,
             updated_at: preference.updated_at.to_i
           }
         end
@@ -58,13 +66,15 @@ module KeystoneUi
 
       private
 
-      def build_palette_css(accent, surface)
+      def build_palette_css(accent, surface, custom = nil)
         accent_shades = resolve_shades(accent, :accent)
         surface_shades = resolve_shades(surface, :surface)
 
         lines = []
         accent_shades.each { |shade, hex| lines << "  --color-accent-#{shade}: #{hex};" }
         surface_shades.each { |shade, hex| lines << "  --color-surface-#{shade}: #{hex};" }
+        lines << "  --color-custom-background: #{custom.background};" if custom
+        lines << "  --color-custom-text: #{custom.text};" if custom
 
         @keystone_palette_css = ":root {\n#{lines.join("\n")}\n}"
       end
@@ -78,6 +88,8 @@ module KeystoneUi
       end
 
       def stale_cache?(owner, cached)
+        return true unless cached.key?(:text)
+
         updated_at = KeystoneUi::Colors::ThemePreference
           .where(owner: owner)
           .pick(:updated_at)

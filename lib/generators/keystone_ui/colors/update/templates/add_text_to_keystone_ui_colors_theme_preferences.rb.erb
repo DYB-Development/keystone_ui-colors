@@ -1,0 +1,5 @@
+class AddTextToKeystoneUiColorsThemePreferences < ActiveRecord::Migration[<%= ActiveRecord::Migration.current_version %>]
+  def change
+    add_column :keystone_ui_colors_theme_preferences, :text, :string
+  end
+end

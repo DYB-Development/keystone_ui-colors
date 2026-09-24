@@ -13,6 +13,12 @@
     KeystoneUi::Colors::Palettes.surface(preference.surface || "zinc")[500]
   end
 
+  current_text_hex = KeystoneUi::Colors::CustomColours.new(
+    template_name: preference.template_name,
+    surface: preference.surface,
+    text: preference.text
+  ).text
+
   selected_template = preference.template_name
   custom_selected = preference.accent&.start_with?("#") || (selected_template.blank? && preference.persisted?)
 %>
@@ -37,7 +43,8 @@
               input_data: {
                 action: "keystone-ui--colors--theme-settings#selectTemplate",
                 "accent-hex": accent_hex,
-                "surface-hex": surface_hex
+                "surface-hex": surface_hex,
+                "text-hex": template[:text]
               },
               label_data: {
                 "keystone-ui--colors--theme-settings-target": "templateLabel",
@@ -75,6 +82,12 @@
       <%= ui_section(title: "Surface", spacing: :sm) do %>
         <div data-keystone-ui--colors--theme-settings-target="surfacePicker">
           <%= ui_color_picker(name: "surface", value: current_surface_hex) %>
+        </div>
+      <% end %>
+
+      <%= ui_section(title: "Text Color", spacing: :sm) do %>
+        <div data-keystone-ui--colors--theme-settings-target="textPicker">
+          <%= ui_color_picker(name: "text", value: current_text_hex) %>
         </div>
       <% end %>
 

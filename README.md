@@ -83,6 +83,8 @@ KeystoneUi::Colors.configure do |config|
   config.default_accent = "blue"               # Fallback accent color
   config.default_surface = "zinc"              # Fallback surface color
   config.default_mode = "light"                # Fallback theme mode: "light", "dark", "system" or "custom"
+  config.default_background = "#ffffff"        # Custom mode background when nothing else sets one
+  config.default_text = "#18181b"              # Custom mode text colour when nothing else sets one
   config.layout = "application"                # Layout for settings page
 end
 ```
@@ -102,16 +104,29 @@ Saving a mode on the settings page clears the toggle's choice in that browser, s
 saved mode takes effect. Pages are marked through keystone_ui's
 `keystone_theme_attributes` helper on the layout's `html` tag.
 
+## Custom Mode
+
+A page in Custom mode is drawn from a background colour and a text colour, which
+the gem writes as `--color-custom-background` and `--color-custom-text` with the
+rest of the palette. keystone_ui-styles draws white in the background and every
+gray and zinc shade as a blend of the text into it.
+
+- A preset theme supplies both colours.
+- With custom colours, the surface colour the user picks is the background and
+  the Text Color picker sets the text.
+- Anything not set falls back to `config.default_background` and
+  `config.default_text`.
+
 ## Preset Themes
 
-| Name     | Accent  | Surface | Description                    |
-|----------|---------|---------|--------------------------------|
-| Default  | *(configured)* | *(configured)* | Uses config defaults |
-| Ocean    | blue    | slate   | Cool blues with slate undertones |
-| Forest   | emerald | stone   | Natural greens with warm stone   |
-| Twilight | violet  | zinc    | Deep violet with clean zinc      |
-| Coral    | rose    | neutral | Warm rose with neutral balance   |
-| Arctic   | cyan    | gray    | Bright cyan with crisp gray      |
+| Name     | Accent  | Surface | Custom background | Custom text | Description                    |
+|----------|---------|---------|-------------------|-------------|--------------------------------|
+| Default  | *(configured)* | *(configured)* | *(configured)* | *(configured)* | Uses config defaults |
+| Ocean    | blue    | slate   | `#e0f2fe` | `#0c4a6e` | Cool blues with slate undertones |
+| Forest   | emerald | stone   | `#ecfdf5` | `#064e3b` | Natural greens with warm stone   |
+| Twilight | violet  | zinc    | `#1e1b4b` | `#ede9fe` | Deep violet with clean zinc      |
+| Coral    | rose    | neutral | `#fff1f2` | `#4c0519` | Warm rose with neutral balance   |
+| Arctic   | cyan    | gray    | `#ecfeff` | `#164e63` | Bright cyan with crisp gray      |
 
 ## Available Colors
 
@@ -187,7 +202,7 @@ Accepts named colors (`"blue"`) or hex values (`"#3b82f6"`) for `accent` and `su
 
 ## Updating
 
-Run the update generator to get the latest Stimulus controller and any new migrations, then migrate:
+Run the update generator to get the latest Stimulus controller and any new migrations (such as the text colour column), then migrate:
 
 ```bash
 bin/rails generate keystone_ui:colors:update

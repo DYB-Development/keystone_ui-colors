@@ -62,6 +62,8 @@ class KeystoneUi::Colors::CurrentPaletteTest < ActiveSupport::TestCase
       accent: "emerald",
       surface: "stone",
       mode: nil,
+      template_name: nil,
+      text: nil,
       updated_at: pref.updated_at.to_i
     }, session[:keystone_ui_colors_palette])
 
@@ -151,5 +153,52 @@ class KeystoneUi::Colors::CurrentPaletteTest < ActiveSupport::TestCase
     end
 
     assert_includes helpers, :keystone_theme_mode
+  end
+
+  test "writes the preset theme's background as the custom background" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: user, accent: "emerald", surface: "stone", template_name: "forest")
+    controller = controller_class.new(user: user)
+
+    controller.set_current_palette
+
+    assert_includes controller.keystone_palette_css, "--color-custom-background: #{KeystoneUi::Colors::Templates[:forest][:background]}"
+  end
+
+  test "writes a picked text colour as the custom text" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: user, accent: "#e11d48", surface: "#f5e6c8", text: "#3b2f1e", template_name: "")
+    controller = controller_class.new(user: user)
+
+    controller.set_current_palette
+
+    assert_includes controller.keystone_palette_css, "--color-custom-text: #3b2f1e"
+  end
+
+  test "writes the configured custom colours for a visitor who is not signed in" do
+    controller = controller_class.new(user: nil)
+
+    controller.set_current_palette
+
+    assert_includes controller.keystone_palette_css, "--color-custom-background: #{KeystoneUi::Colors.configuration.default_background}"
+  end
+
+  test "writes the custom text colour on a request served from the session cache" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: user, accent: "#e11d48", surface: "#f5e6c8", text: "#3b2f1e", template_name: "")
+    session = {}
+    controller_class.new(user: user, session: session).set_current_palette
+    cached = controller_class.new(user: user, session: session)
+
+    cached.set_current_palette
+
+    assert_includes cached.keystone_palette_css, "--color-custom-text: #3b2f1e"
+  end
+
+  test "rereads a preference cached before text colours were kept" do
+    pref = KeystoneUi::Colors::ThemePreference.create!(owner: user, accent: "#e11d48", surface: "#f5e6c8", text: "#3b2f1e", template_name: "")
+    session = { keystone_ui_colors_palette: { accent: pref.accent, surface: pref.surface, mode: nil, updated_at: pref.updated_at.to_i } }
+    controller = controller_class.new(user: user, session: session)
+
+    controller.set_current_palette
+
+    assert_includes controller.keystone_palette_css, "--color-custom-text: #3b2f1e"
   end
 end

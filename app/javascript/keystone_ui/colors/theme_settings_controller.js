@@ -1,11 +1,12 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["accentPicker", "surfacePicker", "customRadio", "templateLabel"]
+  static targets = ["accentPicker", "surfacePicker", "textPicker", "customRadio", "templateLabel"]
 
   connect() {
     this.accentPickerTarget.addEventListener("change", () => this.customColorChanged())
     this.surfacePickerTarget.addEventListener("change", () => this.customColorChanged())
+    this.textPickerTarget.addEventListener("change", () => this.customColorChanged())
   }
 
   selectTemplate(event) {
@@ -13,9 +14,11 @@ export default class extends Controller {
     const label = input.closest("[data-template]")
     const accentHex = input.dataset.accentHex
     const surfaceHex = input.dataset.surfaceHex
+    const textHex = input.dataset.textHex
 
     this.setPickerValue(this.accentPickerTarget, accentHex)
     this.setPickerValue(this.surfacePickerTarget, surfaceHex)
+    this.setPickerValue(this.textPickerTarget, textHex)
 
     this.highlightTemplate(label.dataset.template)
   }

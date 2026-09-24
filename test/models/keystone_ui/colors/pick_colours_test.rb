@@ -44,4 +44,12 @@ class KeystoneUi::Colors::PickColoursTest < ActiveSupport::TestCase
 
     assert_equal KeystoneUi::Colors::Templates[:forest][:accent].to_s, KeystoneUi::Colors::ThemePreference.find_by(owner: user).accent
   end
+
+  test "keeps a picked text colour with custom colours" do
+    user = User.create!(name: "Test")
+
+    KeystoneUi::Colors::PickColours.new(person: user, values: { accent: "#e11d48", surface: "#f5e6c8", text: "#3b2f1e" }).call
+
+    assert_equal "#3b2f1e", KeystoneUi::Colors::ThemePreference.find_by(owner: user).text
+  end
 end

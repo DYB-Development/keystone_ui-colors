@@ -47,7 +47,7 @@ class ColorSettingsTest < ApplicationSystemTestCase
   test "renders color picker components" do
     visit "/keystone_ui_colors"
 
-    assert_css "[data-controller='color-picker']", count: 2
+    assert_css "[data-controller='color-picker']", count: 3
   end
 
   test "a signed-in user's saved theme mode marks the page" do
