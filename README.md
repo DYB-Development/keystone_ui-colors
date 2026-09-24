@@ -85,6 +85,8 @@ KeystoneUi::Colors.configure do |config|
   config.default_mode = "light"                # Fallback theme mode: "light", "dark", "system" or "custom"
   config.default_background = "#ffffff"        # Custom mode background when nothing else sets one
   config.default_text = "#18181b"              # Custom mode text colour when nothing else sets one
+  config.account_colors = true                 # Let account owners choose their account's colours
+  config.current_account_method = nil          # Controller method for the current account, such as :current_account
   config.layout = "application"                # Layout for settings page
 end
 ```
@@ -116,6 +118,24 @@ gray and zinc shade as a blend of the text into it.
   the Text Color picker sets the text.
 - Anything not set falls back to `config.default_background` and
   `config.default_text`.
+
+## Account Colours
+
+Colours are chosen at up to three levels, and a page uses the first that applies:
+
+1. The signed-in user's own colours, when the app lets accounts choose and the
+   user's account lets its members choose.
+2. The account's colours, when the app lets accounts choose.
+3. The app's configured defaults, which fall back to keystone_ui's own colours.
+
+An account's colours are a `ThemePreference` owned by the account. Its
+`members_choose` column, `true` by default, decides whether members may use their
+own colours. Set `config.current_account_method` to the controller method that
+returns the current account. With none set, the account level is skipped.
+
+Light, Dark and System stay each user's own choice at every level. Who may set an
+account's colours is for the app to decide, for example with a settings_hub
+section that needs a capability.
 
 ## Keeping a Page on the Host's Colours
 

@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+### Added
+
+- An account can have its own colours, which its members see unless the account lets them choose their own.
+- `config.account_colors` lets an app stop accounts, and so their members, from choosing colours.
+- `config.current_account_method` names the controller method that returns the current account.
+- The update generator adds the members choose column.
+
 ### Fixed
 
 - Picking custom colours forgets a preset theme chosen earlier, so a custom page shows the picked surface and text colours and not that preset's.
