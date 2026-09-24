@@ -24,4 +24,10 @@ class KeystoneUi::Colors::ColourChoiceTest < ActiveSupport::TestCase
 
     refute KeystoneUi::Colors::ColourChoice.new(person: person, account: account).person_chooses?
   end
+
+  test "a person does not choose their own colours when the app does not let accounts choose" do
+    KeystoneUi::Colors.configuration.account_colors = false
+
+    refute KeystoneUi::Colors::ColourChoice.new(person: person, account: nil).person_chooses?
+  end
 end

@@ -9,6 +9,8 @@ module KeystoneUi
       end
 
       def person_chooses?
+        return false unless KeystoneUi::Colors.configuration.account_colors
+
         account_preference.nil? || account_preference.members_choose
       end
 
