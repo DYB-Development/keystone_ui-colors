@@ -8,6 +8,9 @@
 - `config.account_colors` lets an app stop accounts, and so their members, from choosing colours.
 - `config.current_account_method` names the controller method that returns the current account.
 - The update generator adds the members choose column.
+- An account picker partial and `PickAccountColours` let an account's owner set the account's colours and whether members choose their own.
+- The picker shows a user only the mode when they may not choose colours, and a save from them keeps only the mode.
+- The picker offers Custom to a user who may choose colours, or whose applying colours draw a background other than white.
 
 ### Fixed
 

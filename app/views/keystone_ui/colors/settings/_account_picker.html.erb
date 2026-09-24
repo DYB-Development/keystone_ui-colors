@@ -1,0 +1,22 @@
+<% preference = KeystoneUi::Colors::ThemePreference.find_or_initialize_by(owner: account) %>
+
+<%= ui_panel(padding: :lg) do %>
+  <%= form_with(
+    url: submit_url,
+    method: :patch,
+    data: { turbo: false, controller: "keystone-ui--colors--theme-settings", selected_template: preference.template_name }
+  ) do |form| %>
+    <div style="display: flex; flex-direction: column; gap: 2rem;">
+      <%= render partial: "keystone_ui/colors/settings/colours", locals: { preference: preference } %>
+
+      <%= ui_section(title: "Members", spacing: :sm) do %>
+        <%= hidden_field_tag "members_choose", "0", id: nil %>
+        <%= ui_checkbox_row(name: "members_choose", value: "1", label: "Members choose their own colours", checked: preference.members_choose) %>
+      <% end %>
+
+      <div>
+        <%= ui_button(label: "Save", type: :submit) %>
+      </div>
+    </div>
+  <% end %>
+<% end %>

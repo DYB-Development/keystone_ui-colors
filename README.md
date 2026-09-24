@@ -133,9 +133,29 @@ An account's colours are a `ThemePreference` owned by the account. Its
 own colours. Set `config.current_account_method` to the controller method that
 returns the current account. With none set, the account level is skipped.
 
-Light, Dark and System stay each user's own choice at every level. Who may set an
-account's colours is for the app to decide, for example with a settings_hub
-section that needs a capability.
+Light, Dark and System stay each user's own choice at every level. Custom is
+offered to a user who may choose their own colours, and to anyone whose applying
+colours draw a background other than white.
+
+Two partials place the pickers in an app's own settings, each taking `person:`,
+`account:` and `submit_url:`:
+
+- `keystone_ui/colors/settings/picker` saves through `KeystoneUi::Colors::PickColours`.
+  A user who may not choose colours sees only the mode, and a save from them keeps
+  only the mode.
+- `keystone_ui/colors/settings/account_picker` saves through
+  `KeystoneUi::Colors::PickAccountColours`, and holds the account's colours and
+  its Members switch.
+
+Who may set an account's colours is for the app to decide. With settings_hub,
+register the account picker in the account area behind a capability:
+
+```ruby
+SettingsHub.section :account_appearance, area: :account, title: "Appearance",
+  capability: :manage_account,
+  renders: "keystone_ui/colors/settings/account_picker",
+  runs: "KeystoneUi::Colors::PickAccountColours"
+```
 
 ## Keeping a Page on the Host's Colours
 

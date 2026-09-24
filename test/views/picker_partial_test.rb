@@ -7,7 +7,7 @@ class PickerPartialTest < ActionView::TestCase
 
   test "the picker submits to the address it is given" do
     user = User.create!(name: "Test")
-    render partial: "keystone_ui/colors/settings/picker", locals: { person: user, account: :an_account, submit_url: "/somewhere/else" }
+    render partial: "keystone_ui/colors/settings/picker", locals: { person: user, account: nil, submit_url: "/somewhere/else" }
 
     assert_includes rendered, 'action="/somewhere/else"'
   end
@@ -17,5 +17,35 @@ class PickerPartialTest < ActionView::TestCase
     render partial: "keystone_ui/colors/settings/picker", locals: { person: user, account: nil, submit_url: "/colors" }
 
     assert_includes rendered, 'name="text"'
+  end
+
+  test "the picker offers no colours to a person whose account keeps the choice" do
+    user = User.create!(name: "Member")
+    account = Account.create!(name: "Acme")
+    KeystoneUi::Colors::ThemePreference.create!(owner: account, accent: "emerald", surface: "stone", members_choose: false)
+
+    render partial: "keystone_ui/colors/settings/picker", locals: { person: user, account: account, submit_url: "/colors" }
+
+    refute_includes rendered, 'name="accent"'
+  end
+
+  test "the picker leaves out the custom mode when the account's colours draw white" do
+    user = User.create!(name: "Member")
+    account = Account.create!(name: "Acme")
+    KeystoneUi::Colors::ThemePreference.create!(owner: account, accent: "emerald", surface: "stone", members_choose: false)
+
+    render partial: "keystone_ui/colors/settings/picker", locals: { person: user, account: account, submit_url: "/colors" }
+
+    refute_includes rendered, 'value="custom"'
+  end
+
+  test "the picker offers the custom mode when the account's preset draws a background" do
+    user = User.create!(name: "Member")
+    account = Account.create!(name: "Acme")
+    KeystoneUi::Colors::ThemePreference.create!(owner: account, accent: "blue", surface: "slate", template_name: "ocean", members_choose: false)
+
+    render partial: "keystone_ui/colors/settings/picker", locals: { person: user, account: account, submit_url: "/colors" }
+
+    assert_includes rendered, 'value="custom"'
   end
 end

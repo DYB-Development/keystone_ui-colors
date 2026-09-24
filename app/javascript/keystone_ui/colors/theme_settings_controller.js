@@ -4,9 +4,15 @@ export default class extends Controller {
   static targets = ["accentPicker", "surfacePicker", "textPicker", "customRadio", "templateLabel"]
 
   connect() {
-    this.accentPickerTarget.addEventListener("change", () => this.customColorChanged())
-    this.surfacePickerTarget.addEventListener("change", () => this.customColorChanged())
-    this.textPickerTarget.addEventListener("change", () => this.customColorChanged())
+    this.colorPickerTargets().forEach(picker => picker.addEventListener("change", () => this.customColorChanged()))
+  }
+
+  colorPickerTargets() {
+    return [
+      this.hasAccentPickerTarget && this.accentPickerTarget,
+      this.hasSurfacePickerTarget && this.surfacePickerTarget,
+      this.hasTextPickerTarget && this.textPickerTarget
+    ].filter(Boolean)
   }
 
   selectTemplate(event) {
