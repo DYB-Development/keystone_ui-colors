@@ -38,4 +38,14 @@ class PickerPartialTest < ActionView::TestCase
 
     refute_includes rendered, 'value="custom"'
   end
+
+  test "the picker offers the custom mode when the account's preset draws a background" do
+    user = User.create!(name: "Member")
+    account = Account.create!(name: "Acme")
+    KeystoneUi::Colors::ThemePreference.create!(owner: account, accent: "blue", surface: "slate", template_name: "ocean", members_choose: false)
+
+    render partial: "keystone_ui/colors/settings/picker", locals: { person: user, account: account, submit_url: "/colors" }
+
+    assert_includes rendered, 'value="custom"'
+  end
 end
