@@ -148,4 +148,10 @@ class SettingsTest < ActionDispatch::IntegrationTest
 
     assert_select "input[name='mode'][value=light][checked]"
   end
+
+  test "PATCH /keystone_ui_colors saves a picked text colour" do
+    patch "/keystone_ui_colors", params: { accent: "blue", surface: "#f5e6c8", text: "#3b2f1e", mode: "custom" }
+
+    assert_equal "#3b2f1e", user.reload.theme_preference.text
+  end
 end
