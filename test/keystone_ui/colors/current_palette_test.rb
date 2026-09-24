@@ -152,4 +152,13 @@ class KeystoneUi::Colors::CurrentPaletteTest < ActiveSupport::TestCase
 
     assert_includes helpers, :keystone_theme_mode
   end
+
+  test "writes the preset theme's background as the custom background" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: user, accent: "emerald", surface: "stone", template_name: "forest")
+    controller = controller_class.new(user: user)
+
+    controller.set_current_palette
+
+    assert_includes controller.keystone_palette_css, "--color-custom-background: #{KeystoneUi::Colors::Templates[:forest][:background]}"
+  end
 end

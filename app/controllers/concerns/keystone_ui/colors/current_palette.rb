@@ -36,7 +36,8 @@ module KeystoneUi
         accent = preference&.accent || KeystoneUi::Colors.configuration.default_accent
         surface = preference&.surface || KeystoneUi::Colors.configuration.default_surface
 
-        build_palette_css(accent, surface)
+        custom = KeystoneUi::Colors::CustomColours.new(template_name: preference&.template_name, surface: surface, text: preference&.text)
+        build_palette_css(accent, surface, custom)
 
         if preference
           session[:keystone_ui_colors_palette] = {
@@ -58,13 +59,14 @@ module KeystoneUi
 
       private
 
-      def build_palette_css(accent, surface)
+      def build_palette_css(accent, surface, custom = nil)
         accent_shades = resolve_shades(accent, :accent)
         surface_shades = resolve_shades(surface, :surface)
 
         lines = []
         accent_shades.each { |shade, hex| lines << "  --color-accent-#{shade}: #{hex};" }
         surface_shades.each { |shade, hex| lines << "  --color-surface-#{shade}: #{hex};" }
+        lines << "  --color-custom-background: #{custom.background};" if custom
 
         @keystone_palette_css = ":root {\n#{lines.join("\n")}\n}"
       end
