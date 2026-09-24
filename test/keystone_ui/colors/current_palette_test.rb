@@ -211,4 +211,16 @@ class KeystoneUi::Colors::CurrentPaletteTest < ActiveSupport::TestCase
 
     assert_includes controller.keystone_palette_css, "--color-accent-500: #3b82f6"
   end
+
+  test "a user's own colours give way to the app's when the app does not let accounts choose" do
+    KeystoneUi::Colors.configuration.account_colors = false
+    KeystoneUi::Colors::ThemePreference.create!(owner: user, accent: "emerald", surface: "stone")
+    controller = controller_class.new(user: user)
+
+    controller.set_current_palette
+
+    assert_includes controller.keystone_palette_css, "--color-accent-500: #3b82f6"
+  ensure
+    KeystoneUi::Colors.reset_configuration!
+  end
 end

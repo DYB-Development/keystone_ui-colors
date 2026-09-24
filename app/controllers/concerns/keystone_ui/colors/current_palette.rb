@@ -21,6 +21,10 @@ module KeystoneUi
         owner = send(KeystoneUi::Colors.configuration.current_owner_method)
 
         return apply_host_palette unless owner
+        return apply_own_mode_only(owner) unless KeystoneUi::Colors.configuration.account_colors
+
+        account = keystone_account
+        return apply_account_palette(owner, account) if account
 
         cached = session[:keystone_ui_colors_palette]
 
@@ -54,6 +58,19 @@ module KeystoneUi
         end
       end
 
+      def apply_account_palette(owner, account)
+        own = KeystoneUi::Colors::ThemePreference.find_by(owner: owner)
+        account_preference = KeystoneUi::Colors::ThemePreference.find_by(owner: account)
+        @keystone_theme_mode = own&.mode || KeystoneUi::Colors.configuration.default_mode
+        members_choose = account_preference.nil? || account_preference.members_choose
+        write_palette(members_choose ? own || account_preference : account_preference)
+      end
+
+      def apply_own_mode_only(owner)
+        @keystone_theme_mode = KeystoneUi::Colors::ThemePreference.find_by(owner: owner)&.mode || KeystoneUi::Colors.configuration.default_mode
+        write_palette(nil)
+      end
+
       def apply_host_palette
         @keystone_theme_mode = KeystoneUi::Colors.configuration.default_mode
         build_palette_css(
@@ -72,6 +89,20 @@ module KeystoneUi
       end
 
       private
+
+      def keystone_account
+        method = KeystoneUi::Colors.configuration.current_account_method
+        send(method) if method
+      end
+
+      def write_palette(preference)
+        surface = preference&.surface || KeystoneUi::Colors.configuration.default_surface
+        build_palette_css(
+          preference&.accent || KeystoneUi::Colors.configuration.default_accent,
+          surface,
+          KeystoneUi::Colors::CustomColours.new(template_name: preference&.template_name, surface: surface, text: preference&.text)
+        )
+      end
 
       def build_palette_css(accent, surface, custom = nil)
         accent_shades = resolve_shades(accent, :accent)

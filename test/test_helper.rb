@@ -13,11 +13,16 @@ ActiveRecord::Schema.define do
     t.string :template_name
     t.string :mode
     t.string :text
+    t.boolean :members_choose, default: true, null: false
     t.references :owner, polymorphic: true, null: false
     t.timestamps
   end
 
   create_table :users, force: true do |t|
+    t.string :name
+  end
+
+  create_table :accounts, force: true do |t|
     t.string :name
   end
 end

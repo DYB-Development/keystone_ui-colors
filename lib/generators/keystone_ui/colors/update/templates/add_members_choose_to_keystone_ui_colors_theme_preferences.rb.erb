@@ -1,0 +1,5 @@
+class AddMembersChooseToKeystoneUiColorsThemePreferences < ActiveRecord::Migration[<%= ActiveRecord::Migration.current_version %>]
+  def change
+    add_column :keystone_ui_colors_theme_preferences, :members_choose, :boolean, default: true, null: false
+  end
+end

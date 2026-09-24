@@ -73,4 +73,10 @@ class KeystoneUi::Colors::ThemePreferenceTest < ActiveSupport::TestCase
 
     refute pref.valid?
   end
+
+  test "lets an account's members choose their own colours by default" do
+    pref = KeystoneUi::Colors::ThemePreference.new(owner: user, accent: "blue", surface: "zinc")
+
+    assert pref.members_choose
+  end
 end
