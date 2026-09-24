@@ -26,4 +26,10 @@ class KeystoneUi::Colors::CustomColoursTest < ActiveSupport::TestCase
 
     assert_equal KeystoneUi::Colors::Templates[:twilight][:text], colours.text
   end
+
+  test "a picked text colour is used when no preset theme is chosen" do
+    colours = KeystoneUi::Colors::CustomColours.new(template_name: "", surface: "#f5e6c8", text: "#3b2f1e")
+
+    assert_equal "#3b2f1e", colours.text
+  end
 end

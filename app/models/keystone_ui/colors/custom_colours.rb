@@ -17,7 +17,9 @@ module KeystoneUi
       end
 
       def text
-        Templates[@template_name][:text]
+        return Templates[@template_name][:text] if @template_name.present?
+
+        @text
       end
     end
   end
