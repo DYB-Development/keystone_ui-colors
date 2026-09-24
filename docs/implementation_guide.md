@@ -23,6 +23,8 @@ Single table: `keystone_ui_colors_theme_preferences`
 | accent        | string  | NOT NULL. Named color (`"blue"`) or hex (`"#3b82f6"`) |
 | surface       | string  | NOT NULL. Named color (`"zinc"`) or hex (`"#44403c"`) |
 | template_name | string  | Nullable. Template key if a preset was selected |
+| mode          | string  | Nullable. `light`, `dark`, `system` or `custom` |
+| text          | string  | Nullable. Hex text colour for Custom mode (`"#3b2f1e"`) |
 | owner_type    | string  | NOT NULL. Polymorphic type |
 | owner_id      | integer | NOT NULL. Polymorphic ID |
 | created_at    | datetime | |
@@ -146,6 +148,7 @@ Each palette produces 11 shades: 50, 100, 200, 300, 400, 500, 600, 700, 800, 900
 - `accent`: must be one of `blue, emerald, cyan, indigo, violet, rose` OR a valid hex `#RRGGBB`
 - `surface`: must be one of `zinc, slate, gray, neutral, stone` OR a valid hex `#RRGGBB`
 - `template_name`: must be a known template name or blank (blank = custom colors)
+- `text`: a valid hex `#RRGGBB` or blank
 
 ## Settings UI
 
@@ -154,6 +157,7 @@ The engine provides a settings page at its mount point with:
 - A "Custom" option
 - Accent color picker (`ui_color_picker` component from keystone_ui)
 - Surface color picker
+- Text color picker
 - Save button
 
 Selecting a template updates the color pickers. Changing a color picker switches to "Custom" mode. The form submits via standard HTTP (no Turbo).

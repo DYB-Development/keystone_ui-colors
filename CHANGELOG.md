@@ -5,6 +5,9 @@
 ### Added
 
 - Users can choose Custom as their mode on the settings page, saved with their palette.
+- Users can pick a text colour, and each preset theme has a background and a text colour, which the gem writes for Custom mode.
+- `config.default_background` and `config.default_text` set the Custom mode colours when nothing else does.
+- The update generator adds the text colour column.
 
 ## [0.2.0] - 2026-09-14
 
