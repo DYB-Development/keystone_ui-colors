@@ -28,4 +28,10 @@ class KeystoneUi::Colors::PickAccountColoursTest < ActiveSupport::TestCase
 
     assert_equal "forest", account_preference.template_name
   end
+
+  test "keeps whether the account lets its members choose their own colours" do
+    pick(template_name: "forest", members_choose: "0")
+
+    refute account_preference.members_choose
+  end
 end

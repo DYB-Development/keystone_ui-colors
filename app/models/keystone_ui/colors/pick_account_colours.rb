@@ -9,7 +9,11 @@ module KeystoneUi
       end
 
       def call
-        PickColours.new(owner: @account, values: @values).call
+        result = PickColours.new(owner: @account, values: @values.except(:members_choose)).call
+        return result unless result.ok? && @values.key?(:members_choose)
+
+        ThemePreference.find_by(owner: @account).update!(members_choose: @values[:members_choose] == "1")
+        result
       end
     end
   end
