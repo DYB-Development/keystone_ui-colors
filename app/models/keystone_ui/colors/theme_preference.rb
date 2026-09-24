@@ -13,7 +13,7 @@ module KeystoneUi
 
       HEX_COLOR = /\A#[0-9a-fA-F]{6}\z/
 
-      MODES = %w[light dark system].freeze
+      MODES = %w[light dark system custom].freeze
 
       validate :accent_is_valid
       validate :surface_is_valid

@@ -61,4 +61,10 @@ class KeystoneUi::Colors::ThemePreferenceTest < ActiveSupport::TestCase
 
     refute pref.valid?
   end
+
+  test "accepts custom as a mode" do
+    pref = KeystoneUi::Colors::ThemePreference.new(owner: user, accent: "blue", surface: "#f5e6c8", mode: "custom")
+
+    assert pref.valid?
+  end
 end
