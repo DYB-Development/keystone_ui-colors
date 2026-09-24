@@ -11,6 +11,12 @@ module KeystoneUi
         helper_method :keystone_palette_css, :keystone_theme_mode if respond_to?(:helper_method)
       end
 
+      class_methods do
+        def keystone_host_colors(**options)
+          before_action :apply_host_palette, **options
+        end
+      end
+
       def set_current_palette
         owner = send(KeystoneUi::Colors.configuration.current_owner_method)
 
