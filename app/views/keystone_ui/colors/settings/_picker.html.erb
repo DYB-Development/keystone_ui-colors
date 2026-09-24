@@ -20,6 +20,7 @@
   ).text
 
   selected_template = preference.template_name
+  choice = KeystoneUi::Colors::ColourChoice.new(person: person, account: account)
   custom_selected = preference.accent&.start_with?("#") || (selected_template.blank? && preference.persisted?)
 %>
 
@@ -30,6 +31,7 @@
     data: { turbo: false, controller: "keystone-ui--colors--theme-settings", selected_template: selected_template }
   ) do |form| %>
     <div style="display: flex; flex-direction: column; gap: 2rem;">
+      <% if choice.person_chooses? %>
       <%= ui_section(title: "Theme", spacing: :sm) do %>
         <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
           <% KeystoneUi::Colors::Templates.names.each do |name| %>
@@ -89,6 +91,7 @@
         <div data-keystone-ui--colors--theme-settings-target="textPicker">
           <%= ui_color_picker(name: "text", value: current_text_hex) %>
         </div>
+      <% end %>
       <% end %>
 
       <%= ui_section(title: "Mode", spacing: :sm) do %>
