@@ -15,4 +15,10 @@ class AccountPickerPartialTest < ActionView::TestCase
 
     assert_includes rendered, 'value="ocean"'
   end
+
+  test "the account picker lets members choose their own colours by default" do
+    render_picker
+
+    assert_select "input[type='checkbox'][name='members_choose'][value='1'][checked]"
+  end
 end

@@ -9,6 +9,11 @@
     <div style="display: flex; flex-direction: column; gap: 2rem;">
       <%= render partial: "keystone_ui/colors/settings/colours", locals: { preference: preference } %>
 
+      <%= ui_section(title: "Members", spacing: :sm) do %>
+        <%= hidden_field_tag "members_choose", "0", id: nil %>
+        <%= ui_checkbox_row(name: "members_choose", value: "1", label: "Members choose their own colours", checked: preference.members_choose) %>
+      <% end %>
+
       <div>
         <%= ui_button(label: "Save", type: :submit) %>
       </div>
