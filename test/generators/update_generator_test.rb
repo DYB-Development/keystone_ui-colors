@@ -31,4 +31,11 @@ class KeystoneUi::Colors::Generators::UpdateGeneratorTest < ActiveSupport::TestC
     migration = Dir.glob("#{destination}/db/migrate/*_add_mode_to_keystone_ui_colors_theme_preferences.rb").first
     assert_includes File.read(migration.to_s), "add_column :keystone_ui_colors_theme_preferences, :mode, :string"
   end
+
+  test "adds a migration giving existing preferences a text colour" do
+    Rails::Generators.invoke("keystone_ui:colors:update", [], destination_root: destination, quiet: true)
+
+    migration = Dir.glob("#{destination}/db/migrate/*_add_text_to_keystone_ui_colors_theme_preferences.rb").first
+    assert_includes File.read(migration.to_s), "add_column :keystone_ui_colors_theme_preferences, :text, :string"
+  end
 end

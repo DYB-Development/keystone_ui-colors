@@ -20,6 +20,13 @@ module KeystoneUi
           )
         end
 
+        def add_text_migration
+          migration_template(
+            File.expand_path("templates/add_text_to_keystone_ui_colors_theme_preferences.rb.erb", __dir__),
+            "db/migrate/add_text_to_keystone_ui_colors_theme_preferences.rb"
+          )
+        end
+
         def copy_stimulus_controller
           copy_file "theme_settings_controller.js",
             "app/javascript/controllers/keystone_ui/colors/theme_settings_controller.js"
