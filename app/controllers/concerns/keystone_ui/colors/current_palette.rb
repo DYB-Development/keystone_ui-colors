@@ -14,15 +14,7 @@ module KeystoneUi
       def set_current_palette
         owner = send(KeystoneUi::Colors.configuration.current_owner_method)
 
-        unless owner
-          @keystone_theme_mode = KeystoneUi::Colors.configuration.default_mode
-          build_palette_css(
-            KeystoneUi::Colors.configuration.default_accent,
-            KeystoneUi::Colors.configuration.default_surface,
-            KeystoneUi::Colors::CustomColours.new(template_name: nil, surface: nil, text: nil)
-          )
-          return
-        end
+        return apply_host_palette unless owner
 
         cached = session[:keystone_ui_colors_palette]
 
@@ -54,6 +46,15 @@ module KeystoneUi
             updated_at: preference.updated_at.to_i
           }
         end
+      end
+
+      def apply_host_palette
+        @keystone_theme_mode = KeystoneUi::Colors.configuration.default_mode
+        build_palette_css(
+          KeystoneUi::Colors.configuration.default_accent,
+          KeystoneUi::Colors.configuration.default_surface,
+          KeystoneUi::Colors::CustomColours.new(template_name: nil, surface: nil, text: nil)
+        )
       end
 
       def keystone_palette_css
