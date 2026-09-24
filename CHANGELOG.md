@@ -8,6 +8,7 @@
 - Users can pick a text colour, and each preset theme has a background and a text colour, which the gem writes for Custom mode.
 - `config.default_background` and `config.default_text` set the Custom mode colours when nothing else does.
 - The update generator adds the text colour column.
+- A controller that declares `keystone_host_colors` shows its pages in the host's configured colours and mode, whatever the signed-in user saved.
 
 ## [0.2.0] - 2026-09-14
 
