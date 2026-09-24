@@ -22,6 +22,9 @@ module KeystoneUi
 
         return apply_host_palette unless owner
 
+        account = keystone_account
+        return apply_account_palette(owner, account) if account
+
         cached = session[:keystone_ui_colors_palette]
 
         if cached && !stale_cache?(owner, cached)
@@ -54,6 +57,12 @@ module KeystoneUi
         end
       end
 
+      def apply_account_palette(owner, account)
+        own = KeystoneUi::Colors::ThemePreference.find_by(owner: owner)
+        @keystone_theme_mode = own&.mode || KeystoneUi::Colors.configuration.default_mode
+        write_palette(KeystoneUi::Colors::ThemePreference.find_by(owner: account))
+      end
+
       def apply_host_palette
         @keystone_theme_mode = KeystoneUi::Colors.configuration.default_mode
         build_palette_css(
@@ -72,6 +81,20 @@ module KeystoneUi
       end
 
       private
+
+      def keystone_account
+        method = KeystoneUi::Colors.configuration.current_account_method
+        send(method) if method
+      end
+
+      def write_palette(preference)
+        surface = preference&.surface || KeystoneUi::Colors.configuration.default_surface
+        build_palette_css(
+          preference&.accent || KeystoneUi::Colors.configuration.default_accent,
+          surface,
+          KeystoneUi::Colors::CustomColours.new(template_name: preference&.template_name, surface: surface, text: preference&.text)
+        )
+      end
 
       def build_palette_css(accent, surface, custom = nil)
         accent_shades = resolve_shades(accent, :accent)
