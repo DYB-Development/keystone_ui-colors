@@ -97,6 +97,7 @@
       <%= ui_section(title: "Mode", spacing: :sm) do %>
         <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
           <% KeystoneUi::Colors::ThemePreference::MODES.each do |mode| %>
+            <% next if mode == "custom" && !(choice.person_chooses? || choice.custom_offered?) %>
             <%= ui_radio_card(name: "mode", value: mode, label: mode.capitalize, checked: (preference.mode || KeystoneUi::Colors.configuration.default_mode) == mode) %>
           <% end %>
         </div>

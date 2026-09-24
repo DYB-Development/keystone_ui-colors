@@ -28,4 +28,14 @@ class PickerPartialTest < ActionView::TestCase
 
     refute_includes rendered, 'name="accent"'
   end
+
+  test "the picker leaves out the custom mode when the account's colours draw white" do
+    user = User.create!(name: "Member")
+    account = Account.create!(name: "Acme")
+    KeystoneUi::Colors::ThemePreference.create!(owner: account, accent: "emerald", surface: "stone", members_choose: false)
+
+    render partial: "keystone_ui/colors/settings/picker", locals: { person: user, account: account, submit_url: "/colors" }
+
+    refute_includes rendered, 'value="custom"'
+  end
 end
