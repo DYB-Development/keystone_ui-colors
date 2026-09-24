@@ -201,4 +201,14 @@ class KeystoneUi::Colors::CurrentPaletteTest < ActiveSupport::TestCase
 
     assert_includes controller.keystone_palette_css, "--color-custom-text: #3b2f1e"
   end
+
+  test "the host's palette replaces a signed-in user's saved colours" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: user, accent: "emerald", surface: "stone")
+    controller = controller_class.new(user: user)
+    controller.set_current_palette
+
+    controller.apply_host_palette
+
+    assert_includes controller.keystone_palette_css, "--color-accent-500: #3b82f6"
+  end
 end

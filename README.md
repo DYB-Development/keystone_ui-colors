@@ -117,6 +117,21 @@ gray and zinc shade as a blend of the text into it.
 - Anything not set falls back to `config.default_background` and
   `config.default_text`.
 
+## Keeping a Page on the Host's Colours
+
+A controller that declares `keystone_host_colors` renders its pages in the host's
+configured accent, surface, custom colours and mode, whatever the signed-in user
+saved. It takes the same `only:` and `except:` options as `before_action`.
+
+```ruby
+class HomeController < ApplicationController
+  keystone_host_colors
+end
+```
+
+A choice made with keystone_ui's `ui_theme_toggle` in that browser still sets
+light or dark on these pages.
+
 ## Preset Themes
 
 | Name     | Accent  | Surface | Custom background | Custom text | Description                    |
