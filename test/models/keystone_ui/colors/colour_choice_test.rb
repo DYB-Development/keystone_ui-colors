@@ -60,4 +60,11 @@ class KeystoneUi::Colors::ColourChoiceTest < ActiveSupport::TestCase
   test "does not offer the custom mode when the colours that apply draw a white background" do
     refute KeystoneUi::Colors::ColourChoice.new(person: person, account: account).custom_offered?
   end
+
+  test "a person keeps their own mode whoever's colours apply" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: account, accent: "emerald", surface: "stone", members_choose: false)
+    KeystoneUi::Colors::ThemePreference.create!(owner: person, accent: "rose", surface: "zinc", mode: "dark")
+
+    assert_equal "dark", KeystoneUi::Colors::ColourChoice.new(person: person, account: account).mode
+  end
 end
