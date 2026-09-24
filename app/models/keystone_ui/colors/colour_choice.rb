@@ -9,7 +9,15 @@ module KeystoneUi
       end
 
       def person_chooses?
-        true
+        account_preference.nil? || account_preference.members_choose
+      end
+
+      private
+
+      def account_preference
+        return nil unless @account
+
+        @account_preference ||= ThemePreference.find_by(owner: @account)
       end
     end
   end

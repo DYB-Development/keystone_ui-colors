@@ -18,4 +18,10 @@ class KeystoneUi::Colors::ColourChoiceTest < ActiveSupport::TestCase
   test "a person chooses their own colours when nothing stops them" do
     assert KeystoneUi::Colors::ColourChoice.new(person: person, account: account).person_chooses?
   end
+
+  test "a person does not choose their own colours when their account keeps the choice" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: account, accent: "emerald", surface: "stone", members_choose: false)
+
+    refute KeystoneUi::Colors::ColourChoice.new(person: person, account: account).person_chooses?
+  end
 end
