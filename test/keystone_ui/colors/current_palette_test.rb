@@ -223,4 +223,18 @@ class KeystoneUi::Colors::CurrentPaletteTest < ActiveSupport::TestCase
   ensure
     KeystoneUi::Colors.reset_configuration!
   end
+
+  test "serves a palette from a cache whose keys came back from a cookie as strings" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: user, accent: "emerald", surface: "stone")
+    session = {}
+    controller_class.new(user: user, session: session).set_current_palette
+    from_cookie = { keystone_ui_colors_palette: JSON.parse(session[:keystone_ui_colors_palette].to_json) }
+    cached = controller_class.new(user: user, session: from_cookie)
+
+    KeystoneUi::Colors::ThemePreference.stub(:find_by, ->(*) { raise "read the preference again" }) do
+      cached.set_current_palette
+    end
+
+    assert_includes cached.keystone_palette_css, "--color-accent-500: #10b981"
+  end
 end

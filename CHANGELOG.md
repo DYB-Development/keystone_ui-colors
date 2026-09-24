@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- A palette cached in a cookie session is served without reading the preference again, where before the cache's keys came back as strings and every page read the database.
+
 ## [0.4.0] - 2026-09-24
 
 ### Added
