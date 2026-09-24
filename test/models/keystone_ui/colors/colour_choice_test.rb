@@ -36,4 +36,11 @@ class KeystoneUi::Colors::ColourChoiceTest < ActiveSupport::TestCase
 
     assert_equal own, KeystoneUi::Colors::ColourChoice.new(person: person, account: account).applying_preference
   end
+
+  test "the account's colours apply when the account keeps the choice" do
+    account_colours = KeystoneUi::Colors::ThemePreference.create!(owner: account, accent: "emerald", surface: "stone", members_choose: false)
+    KeystoneUi::Colors::ThemePreference.create!(owner: person, accent: "rose", surface: "zinc")
+
+    assert_equal account_colours, KeystoneUi::Colors::ColourChoice.new(person: person, account: account).applying_preference
+  end
 end

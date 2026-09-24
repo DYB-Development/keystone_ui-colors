@@ -15,7 +15,9 @@ module KeystoneUi
       end
 
       def applying_preference
-        own_preference
+        return own_preference || account_preference if person_chooses?
+
+        account_preference
       end
 
       private
