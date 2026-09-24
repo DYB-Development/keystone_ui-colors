@@ -67,6 +67,7 @@ module KeystoneUi
         accent_shades.each { |shade, hex| lines << "  --color-accent-#{shade}: #{hex};" }
         surface_shades.each { |shade, hex| lines << "  --color-surface-#{shade}: #{hex};" }
         lines << "  --color-custom-background: #{custom.background};" if custom
+        lines << "  --color-custom-text: #{custom.text};" if custom
 
         @keystone_palette_css = ":root {\n#{lines.join("\n")}\n}"
       end

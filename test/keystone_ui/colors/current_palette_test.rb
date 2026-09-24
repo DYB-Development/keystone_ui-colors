@@ -161,4 +161,13 @@ class KeystoneUi::Colors::CurrentPaletteTest < ActiveSupport::TestCase
 
     assert_includes controller.keystone_palette_css, "--color-custom-background: #{KeystoneUi::Colors::Templates[:forest][:background]}"
   end
+
+  test "writes a picked text colour as the custom text" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: user, accent: "#e11d48", surface: "#f5e6c8", text: "#3b2f1e", template_name: "")
+    controller = controller_class.new(user: user)
+
+    controller.set_current_palette
+
+    assert_includes controller.keystone_palette_css, "--color-custom-text: #3b2f1e"
+  end
 end
