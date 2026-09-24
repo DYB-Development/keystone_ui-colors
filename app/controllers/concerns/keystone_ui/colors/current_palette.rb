@@ -18,7 +18,8 @@ module KeystoneUi
           @keystone_theme_mode = KeystoneUi::Colors.configuration.default_mode
           build_palette_css(
             KeystoneUi::Colors.configuration.default_accent,
-            KeystoneUi::Colors.configuration.default_surface
+            KeystoneUi::Colors.configuration.default_surface,
+            KeystoneUi::Colors::CustomColours.new(template_name: nil, surface: nil, text: nil)
           )
           return
         end

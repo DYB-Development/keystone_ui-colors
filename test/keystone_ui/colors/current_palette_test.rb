@@ -170,4 +170,12 @@ class KeystoneUi::Colors::CurrentPaletteTest < ActiveSupport::TestCase
 
     assert_includes controller.keystone_palette_css, "--color-custom-text: #3b2f1e"
   end
+
+  test "writes the configured custom colours for a visitor who is not signed in" do
+    controller = controller_class.new(user: nil)
+
+    controller.set_current_palette
+
+    assert_includes controller.keystone_palette_css, "--color-custom-background: #{KeystoneUi::Colors.configuration.default_background}"
+  end
 end
