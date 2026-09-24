@@ -88,6 +88,8 @@ module KeystoneUi
       end
 
       def stale_cache?(owner, cached)
+        return true unless cached.key?(:text)
+
         updated_at = KeystoneUi::Colors::ThemePreference
           .where(owner: owner)
           .pick(:updated_at)
