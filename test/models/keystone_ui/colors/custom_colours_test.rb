@@ -14,4 +14,10 @@ class KeystoneUi::Colors::CustomColoursTest < ActiveSupport::TestCase
 
     assert_equal "#f5e6c8", colours.background
   end
+
+  test "a named surface palette leaves the configured background when no preset theme is chosen" do
+    colours = KeystoneUi::Colors::CustomColours.new(template_name: nil, surface: "stone", text: nil)
+
+    assert_equal KeystoneUi::Colors.configuration.default_background, colours.background
+  end
 end

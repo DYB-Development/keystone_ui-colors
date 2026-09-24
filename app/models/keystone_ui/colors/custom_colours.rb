@@ -10,9 +10,10 @@ module KeystoneUi
       end
 
       def background
-        return @surface if @template_name.blank?
+        return Templates[@template_name][:background] if @template_name.present?
+        return @surface if @surface&.start_with?("#")
 
-        Templates[@template_name][:background]
+        KeystoneUi::Colors.configuration.default_background
       end
     end
   end
