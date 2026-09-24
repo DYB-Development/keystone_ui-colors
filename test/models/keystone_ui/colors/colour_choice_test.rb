@@ -50,4 +50,10 @@ class KeystoneUi::Colors::ColourChoiceTest < ActiveSupport::TestCase
 
     assert_nil KeystoneUi::Colors::ColourChoice.new(person: person, account: account).applying_preference
   end
+
+  test "offers the custom mode when the account's preset draws a coloured background" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: account, accent: "blue", surface: "slate", template_name: "ocean", members_choose: false)
+
+    assert KeystoneUi::Colors::ColourChoice.new(person: person, account: account).custom_offered?
+  end
 end

@@ -21,6 +21,11 @@ module KeystoneUi
         account_preference
       end
 
+      def custom_offered?
+        preference = applying_preference
+        CustomColours.new(template_name: preference&.template_name, surface: preference&.surface, text: preference&.text).background
+      end
+
       private
 
       def own_preference
