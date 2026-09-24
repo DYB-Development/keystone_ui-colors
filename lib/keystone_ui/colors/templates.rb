@@ -64,6 +64,8 @@ module KeystoneUi
         {
           accent: KeystoneUi::Colors.configuration.default_accent,
           surface: KeystoneUi::Colors.configuration.default_surface,
+          background: KeystoneUi::Colors.configuration.default_background,
+          text: KeystoneUi::Colors.configuration.default_text,
           label: "Default",
           description: "Default theme"
         }

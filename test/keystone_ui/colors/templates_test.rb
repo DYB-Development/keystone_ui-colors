@@ -64,4 +64,15 @@ class KeystoneUi::Colors::TemplatesTest < ActiveSupport::TestCase
 
     assert_equal({}, missing)
   end
+
+  test "the default template takes its background and text from the configuration" do
+    KeystoneUi::Colors.configure do |config|
+      config.default_background = "#fef3c7"
+      config.default_text = "#451a03"
+    end
+
+    assert_equal [ "#fef3c7", "#451a03" ], KeystoneUi::Colors::Templates[:default].values_at(:background, :text)
+  ensure
+    KeystoneUi::Colors.reset_configuration!
+  end
 end
