@@ -15,6 +15,10 @@ module KeystoneUi
 
         KeystoneUi::Colors.configuration.default_background
       end
+
+      def text
+        Templates[@template_name][:text]
+      end
     end
   end
 end

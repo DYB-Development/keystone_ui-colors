@@ -20,4 +20,10 @@ class KeystoneUi::Colors::CustomColoursTest < ActiveSupport::TestCase
 
     assert_equal KeystoneUi::Colors.configuration.default_background, colours.background
   end
+
+  test "a preset theme supplies the text colour" do
+    colours = KeystoneUi::Colors::CustomColours.new(template_name: "twilight", surface: "zinc", text: nil)
+
+    assert_equal KeystoneUi::Colors::Templates[:twilight][:text], colours.text
+  end
 end
