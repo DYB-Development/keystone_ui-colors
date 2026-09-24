@@ -55,4 +55,13 @@ class KeystoneUi::Colors::TemplatesTest < ActiveSupport::TestCase
     combos = KeystoneUi::Colors::Templates.all.values.map { |t| [ t[:accent], t[:surface] ] }
     assert_equal combos.size, combos.uniq.size
   end
+
+  test "every preset defines a background and a text colour as hex values" do
+    hex = /\A#[0-9a-f]{6}\z/
+    missing = KeystoneUi::Colors::Templates::PRESETS.reject do |_name, preset|
+      preset[:background].to_s.match?(hex) && preset[:text].to_s.match?(hex)
+    end
+
+    assert_equal({}, missing)
+  end
 end
