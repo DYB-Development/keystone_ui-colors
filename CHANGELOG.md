@@ -4,6 +4,10 @@
 
 ## [0.4.1] - 2026-09-24
 
+### Changed
+
+- Requires keystone_ui 0.15.1 or later, which keeps a custom page's theme across Turbo visits.
+
 ### Fixed
 
 - The update generator adds no migration for a column the app's colour preference migrations already create, so an app installed with the mode or text column no longer gets a migration that fails on it.
