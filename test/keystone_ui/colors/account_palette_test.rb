@@ -66,4 +66,11 @@ class KeystoneUi::Colors::AccountPaletteTest < ActiveSupport::TestCase
 
     assert_includes palette_for(user, account).keystone_palette_css, "--color-accent-500: #3b82f6"
   end
+
+  test "a member keeps their own mode when the account's colours apply" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: account, accent: "emerald", surface: "stone", members_choose: false)
+    KeystoneUi::Colors::ThemePreference.create!(owner: user, accent: "rose", surface: "zinc", mode: "dark")
+
+    assert_equal "dark", palette_for(user, account).keystone_theme_mode
+  end
 end
