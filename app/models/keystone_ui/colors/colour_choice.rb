@@ -14,7 +14,15 @@ module KeystoneUi
         account_preference.nil? || account_preference.members_choose
       end
 
+      def applying_preference
+        own_preference
+      end
+
       private
+
+      def own_preference
+        @own_preference ||= ThemePreference.find_by(owner: @person)
+      end
 
       def account_preference
         return nil unless @account

@@ -30,4 +30,10 @@ class KeystoneUi::Colors::ColourChoiceTest < ActiveSupport::TestCase
 
     refute KeystoneUi::Colors::ColourChoice.new(person: person, account: nil).person_chooses?
   end
+
+  test "a person's own colours apply when they choose" do
+    own = KeystoneUi::Colors::ThemePreference.create!(owner: person, accent: "rose", surface: "zinc")
+
+    assert_equal own, KeystoneUi::Colors::ColourChoice.new(person: person, account: account).applying_preference
+  end
 end
