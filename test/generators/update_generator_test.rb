@@ -45,4 +45,17 @@ class KeystoneUi::Colors::Generators::UpdateGeneratorTest < ActiveSupport::TestC
     migration = Dir.glob("#{destination}/db/migrate/*_add_members_choose_to_keystone_ui_colors_theme_preferences.rb").first
     assert_includes File.read(migration.to_s), "add_column :keystone_ui_colors_theme_preferences, :members_choose, :boolean, default: true, null: false"
   end
+
+  test "adds no mode migration for an app whose install migration already made the column" do
+    FileUtils.mkdir_p("#{destination}/db/migrate")
+    File.write("#{destination}/db/migrate/20260917191712_create_keystone_ui_colors_theme_preferences.rb", <<~RUBY)
+      create_table :keystone_ui_colors_theme_preferences do |t|
+        t.string :mode
+      end
+    RUBY
+
+    Rails::Generators.invoke("keystone_ui:colors:update", [], destination_root: destination, quiet: true)
+
+    assert_empty Dir.glob("#{destination}/db/migrate/*_add_mode_to_keystone_ui_colors_theme_preferences.rb")
+  end
 end
