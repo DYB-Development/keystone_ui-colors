@@ -25,4 +25,8 @@ class KeystoneUi::Colors::ConfigurationTest < ActiveSupport::TestCase
   test "defaults a custom page's background to #ffffff" do
     assert_equal "#ffffff", KeystoneUi::Colors::Configuration.new.default_background
   end
+
+  test "defaults a custom page's text to #18181b" do
+    assert_equal "#18181b", KeystoneUi::Colors::Configuration.new.default_text
+  end
 end
