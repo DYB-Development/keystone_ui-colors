@@ -82,7 +82,7 @@ KeystoneUi::Colors.configure do |config|
   config.default_template = :ocean             # Fallback theme
   config.default_accent = "blue"               # Fallback accent color
   config.default_surface = "zinc"              # Fallback surface color
-  config.default_mode = "light"                # Fallback theme mode: "light", "dark" or "system"
+  config.default_mode = "light"                # Fallback theme mode: "light", "dark", "system" or "custom"
   config.layout = "application"                # Layout for settings page
 end
 ```
@@ -91,8 +91,8 @@ All values shown are defaults and can be omitted.
 
 ## Light and Dark Mode
 
-Users choose Light, Dark or System on the settings page, and the choice is saved
-with their palette. keystone_ui renders each page in, strongest first:
+Users choose Light, Dark, System or Custom on the settings page, and the choice is
+saved with their palette. keystone_ui renders each page in, strongest first:
 
 1. The choice made with keystone_ui's `ui_theme_toggle` in this browser.
 2. The mode the signed-in user saved.
