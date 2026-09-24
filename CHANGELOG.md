@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Picking custom colours forgets a preset theme chosen earlier, so a custom page shows the picked surface and text colours and not that preset's.
+
 ## [0.3.1] - 2026-09-24
 
 ### Changed

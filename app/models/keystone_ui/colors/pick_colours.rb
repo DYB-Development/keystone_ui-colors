@@ -23,8 +23,14 @@ module KeystoneUi
         @preference ||= ThemePreference.find_or_initialize_by(owner: @owner)
       end
 
+      def custom_colours
+        colours = { accent: @values[:accent], surface: @values[:surface], text: @values[:text], mode: @values[:mode] }.compact
+        colours[:template_name] = nil if @values.key?(:template_name)
+        colours
+      end
+
       def chosen_colours
-        return { accent: @values[:accent], surface: @values[:surface], text: @values[:text], mode: @values[:mode] }.compact if @values[:template_name].blank?
+        return custom_colours if @values[:template_name].blank?
 
         template = Templates[@values[:template_name]]
         {
