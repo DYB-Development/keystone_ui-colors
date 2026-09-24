@@ -24,7 +24,7 @@ module KeystoneUi
       end
 
       def chosen_colours
-        return { accent: @values[:accent], surface: @values[:surface], mode: @values[:mode] }.compact if @values[:template_name].blank?
+        return { accent: @values[:accent], surface: @values[:surface], text: @values[:text], mode: @values[:mode] }.compact if @values[:template_name].blank?
 
         template = Templates[@values[:template_name]]
         {
