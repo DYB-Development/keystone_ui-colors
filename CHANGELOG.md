@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- Users can choose Custom as their mode on the settings page, saved with their palette.
+
 ## [0.2.0] - 2026-09-14
 
 ### Added
