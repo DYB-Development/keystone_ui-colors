@@ -59,8 +59,10 @@ module KeystoneUi
 
       def apply_account_palette(owner, account)
         own = KeystoneUi::Colors::ThemePreference.find_by(owner: owner)
+        account_preference = KeystoneUi::Colors::ThemePreference.find_by(owner: account)
         @keystone_theme_mode = own&.mode || KeystoneUi::Colors.configuration.default_mode
-        write_palette(own || KeystoneUi::Colors::ThemePreference.find_by(owner: account))
+        members_choose = account_preference.nil? || account_preference.members_choose
+        write_palette(members_choose ? own || account_preference : account_preference)
       end
 
       def apply_host_palette
