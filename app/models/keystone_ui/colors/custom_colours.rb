@@ -10,6 +10,8 @@ module KeystoneUi
       end
 
       def background
+        return @surface if @template_name.blank?
+
         Templates[@template_name][:background]
       end
     end
