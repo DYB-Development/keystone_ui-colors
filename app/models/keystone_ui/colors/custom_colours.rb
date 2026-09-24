@@ -19,7 +19,7 @@ module KeystoneUi
       def text
         return Templates[@template_name][:text] if @template_name.present?
 
-        @text
+        @text.presence || KeystoneUi::Colors.configuration.default_text
       end
     end
   end

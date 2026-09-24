@@ -32,4 +32,10 @@ class KeystoneUi::Colors::CustomColoursTest < ActiveSupport::TestCase
 
     assert_equal "#3b2f1e", colours.text
   end
+
+  test "the configured text colour is used when none is picked" do
+    colours = KeystoneUi::Colors::CustomColours.new(template_name: nil, surface: "#f5e6c8", text: nil)
+
+    assert_equal KeystoneUi::Colors.configuration.default_text, colours.text
+  end
 end
