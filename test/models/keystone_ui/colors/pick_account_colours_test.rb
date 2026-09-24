@@ -34,4 +34,10 @@ class KeystoneUi::Colors::PickAccountColoursTest < ActiveSupport::TestCase
 
     refute account_preference.members_choose
   end
+
+  test "keeps no mode for the account" do
+    pick(template_name: "forest", mode: "dark")
+
+    assert_nil account_preference.mode
+  end
 end
