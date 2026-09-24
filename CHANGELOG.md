@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-09-24
+
+### Changed
+
+- Requires keystone_ui 0.14.0 or later, which marks a page custom when this gem supplies Custom mode.
+
 ## [0.3.0] - 2026-09-24
 
 ### Added
