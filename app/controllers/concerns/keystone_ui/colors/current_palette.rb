@@ -24,7 +24,7 @@ module KeystoneUi
         account = keystone_account
         return apply_chosen_palette(owner, account) if account || !KeystoneUi::Colors.configuration.account_colors
 
-        cached = session[:keystone_ui_colors_palette]
+        cached = session[:keystone_ui_colors_palette]&.symbolize_keys
 
         if cached && !stale_cache?(owner, cached)
           @keystone_theme_mode = cached[:mode] || KeystoneUi::Colors.configuration.default_mode
