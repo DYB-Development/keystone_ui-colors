@@ -43,4 +43,11 @@ class KeystoneUi::Colors::ColourChoiceTest < ActiveSupport::TestCase
 
     assert_equal account_colours, KeystoneUi::Colors::ColourChoice.new(person: person, account: account).applying_preference
   end
+
+  test "no saved colours apply when the app does not let accounts choose" do
+    KeystoneUi::Colors.configuration.account_colors = false
+    KeystoneUi::Colors::ThemePreference.create!(owner: account, accent: "emerald", surface: "stone")
+
+    assert_nil KeystoneUi::Colors::ColourChoice.new(person: person, account: account).applying_preference
+  end
 end

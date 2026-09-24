@@ -15,6 +15,7 @@ module KeystoneUi
       end
 
       def applying_preference
+        return nil unless KeystoneUi::Colors.configuration.account_colors
         return own_preference || account_preference if person_chooses?
 
         account_preference
