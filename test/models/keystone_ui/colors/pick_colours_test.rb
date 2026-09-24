@@ -52,4 +52,13 @@ class KeystoneUi::Colors::PickColoursTest < ActiveSupport::TestCase
 
     assert_equal "#3b2f1e", KeystoneUi::Colors::ThemePreference.find_by(owner: user).text
   end
+
+  test "picking custom colours forgets a preset theme chosen earlier" do
+    user = User.create!(name: "Test")
+    KeystoneUi::Colors::PickColours.new(person: user, values: { template_name: "ocean" }).call
+
+    KeystoneUi::Colors::PickColours.new(person: user, values: { template_name: "", accent: "#d52929", surface: "#2020c4" }).call
+
+    assert_nil KeystoneUi::Colors::ThemePreference.find_by(owner: user).template_name
+  end
 end
