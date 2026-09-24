@@ -62,6 +62,8 @@ module KeystoneUi
         account_preference = KeystoneUi::Colors::ThemePreference.find_by(owner: account)
         @keystone_theme_mode = own&.mode || KeystoneUi::Colors.configuration.default_mode
         members_choose = account_preference.nil? || account_preference.members_choose
+        return write_palette(nil) unless KeystoneUi::Colors.configuration.account_colors
+
         write_palette(members_choose ? own || account_preference : account_preference)
       end
 
