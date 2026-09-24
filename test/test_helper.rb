@@ -12,6 +12,7 @@ ActiveRecord::Schema.define do
     t.string :surface, null: false
     t.string :template_name
     t.string :mode
+    t.string :text
     t.references :owner, polymorphic: true, null: false
     t.timestamps
   end

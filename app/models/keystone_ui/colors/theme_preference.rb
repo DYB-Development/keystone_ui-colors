@@ -19,6 +19,7 @@ module KeystoneUi
       validate :surface_is_valid
       validates :template_name, inclusion: { in: Templates.names.map(&:to_s) }, allow_blank: true
       validates :mode, inclusion: { in: MODES }, allow_nil: true
+      validates :text, format: { with: HEX_COLOR }, allow_blank: true
 
       def apply_template!(name)
         template = Templates[name]

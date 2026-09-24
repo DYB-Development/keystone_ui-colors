@@ -67,4 +67,10 @@ class KeystoneUi::Colors::ThemePreferenceTest < ActiveSupport::TestCase
 
     assert pref.valid?
   end
+
+  test "rejects a text colour that is not a hex value" do
+    pref = KeystoneUi::Colors::ThemePreference.new(owner: user, accent: "blue", surface: "zinc", text: "black")
+
+    refute pref.valid?
+  end
 end
