@@ -29,4 +29,8 @@ class KeystoneUi::Colors::ConfigurationTest < ActiveSupport::TestCase
   test "defaults a custom page's text to #18181b" do
     assert_equal "#18181b", KeystoneUi::Colors::Configuration.new.default_text
   end
+
+  test "lets account owners choose their account's colours by default" do
+    assert_equal true, KeystoneUi::Colors::Configuration.new.account_colors
+  end
 end
