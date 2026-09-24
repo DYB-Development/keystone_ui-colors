@@ -56,4 +56,8 @@ class KeystoneUi::Colors::ColourChoiceTest < ActiveSupport::TestCase
 
     assert KeystoneUi::Colors::ColourChoice.new(person: person, account: account).custom_offered?
   end
+
+  test "does not offer the custom mode when the colours that apply draw a white background" do
+    refute KeystoneUi::Colors::ColourChoice.new(person: person, account: account).custom_offered?
+  end
 end

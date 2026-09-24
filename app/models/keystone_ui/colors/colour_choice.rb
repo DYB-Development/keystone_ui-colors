@@ -3,6 +3,8 @@
 module KeystoneUi
   module Colors
     class ColourChoice
+      WHITE = "#ffffff"
+
       def initialize(person:, account:)
         @person = person
         @account = account
@@ -23,7 +25,8 @@ module KeystoneUi
 
       def custom_offered?
         preference = applying_preference
-        CustomColours.new(template_name: preference&.template_name, surface: preference&.surface, text: preference&.text).background
+        background = CustomColours.new(template_name: preference&.template_name, surface: preference&.surface, text: preference&.text).background
+        !background.casecmp?(WHITE)
       end
 
       private
