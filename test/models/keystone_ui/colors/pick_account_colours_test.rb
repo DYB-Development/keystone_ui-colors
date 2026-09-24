@@ -40,4 +40,10 @@ class KeystoneUi::Colors::PickAccountColoursTest < ActiveSupport::TestCase
 
     assert_nil account_preference.mode
   end
+
+  test "refuses when the app does not let accounts choose their colours" do
+    KeystoneUi::Colors.configuration.account_colors = false
+
+    refute pick(template_name: "forest").ok?
+  end
 end

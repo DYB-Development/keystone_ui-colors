@@ -9,6 +9,8 @@ module KeystoneUi
       end
 
       def call
+        return Refusal.new("This app does not let accounts choose their colours.") unless KeystoneUi::Colors.configuration.account_colors
+
         result = PickColours.new(owner: @account, values: @values.except(:members_choose, :mode)).call
         return result unless result.ok? && @values.key?(:members_choose)
 
