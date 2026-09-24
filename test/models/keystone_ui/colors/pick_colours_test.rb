@@ -61,4 +61,15 @@ class KeystoneUi::Colors::PickColoursTest < ActiveSupport::TestCase
 
     assert_nil KeystoneUi::Colors::ThemePreference.find_by(owner: user).template_name
   end
+
+  test "keeps only the mode from a person whose account keeps the colour choice" do
+    user = User.create!(name: "Member")
+    account = Account.create!(name: "Acme")
+    KeystoneUi::Colors::ThemePreference.create!(owner: account, accent: "emerald", surface: "stone", members_choose: false)
+
+    KeystoneUi::Colors::PickColours.new(person: user, account: account, values: { template_name: "", accent: "#e11d48", surface: "#f5e6c8", mode: "dark" }).call
+
+    kept = KeystoneUi::Colors::ThemePreference.find_by(owner: user)
+    assert_equal [ "dark", KeystoneUi::Colors.configuration.default_accent ], [ kept.mode, kept.accent ]
+  end
 end

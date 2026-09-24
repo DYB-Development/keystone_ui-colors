@@ -23,6 +23,11 @@ module KeystoneUi
         @preference ||= ThemePreference.find_or_initialize_by(owner: @owner)
       end
 
+      def mode_only
+        defaults = preference.new_record? ? { accent: KeystoneUi::Colors.configuration.default_accent, surface: KeystoneUi::Colors.configuration.default_surface } : {}
+        defaults.merge(mode: @values[:mode]).compact
+      end
+
       def custom_colours
         colours = { accent: @values[:accent], surface: @values[:surface], text: @values[:text], mode: @values[:mode] }.compact
         colours[:template_name] = nil if @values.key?(:template_name)
@@ -30,6 +35,8 @@ module KeystoneUi
       end
 
       def chosen_colours
+        return mode_only unless ColourChoice.new(person: @owner, account: @account).person_chooses?
+
         return custom_colours if @values[:template_name].blank?
 
         template = Templates[@values[:template_name]]
