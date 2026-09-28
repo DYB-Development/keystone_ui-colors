@@ -60,4 +60,10 @@ class KeystoneUi::Colors::PickAccountColoursTest < ActiveSupport::TestCase
 
     assert_nil account_preference.look
   end
+
+  test "an account can stop its members choosing their own look" do
+    pick(accent: "emerald", surface: "stone", members_choose_look: "0")
+
+    refute account_preference.members_choose_look
+  end
 end
