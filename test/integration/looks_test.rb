@@ -11,6 +11,7 @@ class LooksTest < ActionDispatch::IntegrationTest
     uid = user.id
     KeystoneUi::Colors::ApplicationController.define_method(:current_user) { User.find(uid) }
     KeystoneUi::Colors::ApplicationController.define_method(:authenticate_user!) { true }
+    KeystoneUi::Colors::ApplicationController.allow_forgery_protection = false
   end
 
   def teardown
@@ -45,6 +46,14 @@ class LooksTest < ActionDispatch::IntegrationTest
     get "/keystone_ui_colors"
 
     preference.update!(look: "material", updated_at: 1.minute.from_now)
+    get "/keystone_ui_colors"
+
+    assert_select "html[data-look='material']"
+  end
+
+  test "a look saved on the settings page marks the next page" do
+    patch "/keystone_ui_colors", params: { accent: "blue", surface: "zinc", look: "material" }
+
     get "/keystone_ui_colors"
 
     assert_select "html[data-look='material']"
