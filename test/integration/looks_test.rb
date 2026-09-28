@@ -58,4 +58,13 @@ class LooksTest < ActionDispatch::IntegrationTest
 
     assert_select "html[data-look='material']"
   end
+
+  test "the settings page offers every registered look with the user's look chosen" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: user, accent: "blue", surface: "zinc", look: "material")
+
+    get "/keystone_ui_colors"
+
+    assert_select "input[name='look'][value='plain']"
+    assert_select "input[name='look'][value='material'][checked]"
+  end
 end
