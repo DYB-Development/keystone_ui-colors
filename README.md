@@ -8,7 +8,7 @@ Users pick from preset themes or custom hex colors. The gem generates CSS custom
 
 - Ruby >= 3.1
 - Rails >= 7.0
-- [keystone_ui](https://github.com/DYB-Development/keystone_ui) >= 0.4.1
+- [keystone_ui](https://github.com/DYB-Development/keystone_ui) >= 0.18.0
 
 ## Installation
 
@@ -172,6 +172,15 @@ end
 A choice made with keystone_ui's `ui_theme_toggle` in that browser still sets
 light or dark on these pages.
 
+## Looks
+
+When the host registers looks with keystone_ui, a signed-in user's preference can
+hold one in its `look` column, and every page they see carries it as
+`data-look` on the `html` tag. A user with no saved look, and a visitor who is
+not signed in, see the host's `default_look`. A look name the host no longer
+registers leaves the page on the default. While an account's colours apply, the
+page still shows the user's own look.
+
 ## Preset Themes
 
 | Name     | Accent  | Surface | Custom background | Custom text | Description                    |
@@ -257,7 +266,7 @@ Accepts named colors (`"blue"`) or hex values (`"#3b82f6"`) for `accent` and `su
 
 ## Updating
 
-Run the update generator to get the latest Stimulus controller and any new migrations (such as the text colour column), then migrate:
+Run the update generator to get the latest Stimulus controller and any new migrations (such as the text colour and look columns), then migrate:
 
 ```bash
 bin/rails generate keystone_ui:colors:update
