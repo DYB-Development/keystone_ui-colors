@@ -25,4 +25,28 @@ class LooksTest < ActionDispatch::IntegrationTest
 
     assert_select "html[data-look='material']"
   end
+
+  test "a user with no saved look sees the host's default look" do
+    get "/keystone_ui_colors"
+
+    assert_select "html[data-look='plain']"
+  end
+
+  test "a visitor who is not signed in sees the host's default look" do
+    KeystoneUi::Colors::ApplicationController.define_method(:current_user) { nil }
+
+    get "/keystone_ui_colors"
+
+    assert_select "html[data-look='plain']"
+  end
+
+  test "a user whose look changes sees the new look on the next page" do
+    preference = KeystoneUi::Colors::ThemePreference.create!(owner: user, accent: "blue", surface: "zinc", look: "plain")
+    get "/keystone_ui_colors"
+
+    preference.update!(look: "material", updated_at: 1.minute.from_now)
+    get "/keystone_ui_colors"
+
+    assert_select "html[data-look='material']"
+  end
 end
