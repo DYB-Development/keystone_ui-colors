@@ -80,4 +80,11 @@ class KeystoneUi::Colors::ColourChoiceTest < ActiveSupport::TestCase
 
     assert_equal "plain", KeystoneUi::Colors::ColourChoice.new(person: person, account: account).look
   end
+
+  test "an account's look is not applied when the host lets accounts choose none" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: account, accent: "emerald", surface: "stone", look: "material")
+    KeystoneUi::Colors.configuration.account_looks = false
+
+    assert_nil KeystoneUi::Colors::ColourChoice.new(person: person, account: account).look
+  end
 end
