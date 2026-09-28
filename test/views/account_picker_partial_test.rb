@@ -31,4 +31,14 @@ class AccountPickerPartialTest < ActionView::TestCase
     assert_select "input[name='look'][value='plain']"
     assert_select "input[name='look'][value='material'][checked]"
   end
+
+  test "the account picker offers no look when the host lets accounts choose none" do
+    KeystoneUi::Colors.configuration.account_looks = false
+
+    render_picker
+
+    assert_select ".ks-section-title", text: "Look", count: 0
+  ensure
+    KeystoneUi::Colors.reset_configuration!
+  end
 end
