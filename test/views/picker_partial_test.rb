@@ -63,4 +63,10 @@ class PickerPartialTest < ActionView::TestCase
 
     assert_equal "", css_select("input[name='look']").first["value"]
   end
+
+  test "the picker chooses App default when no look is saved" do
+    render partial: "keystone_ui/colors/settings/picker", locals: { person: User.create!(name: "Test"), account: nil, submit_url: "/colors" }
+
+    assert_select "input[name='look'][value=''][checked]"
+  end
 end
