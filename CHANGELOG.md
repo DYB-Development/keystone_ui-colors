@@ -4,6 +4,11 @@
 
 ### Added
 
+- A user picks a look on the colours settings page, which lists every registered look with their current one chosen.
+- Saving a look the host does not register is refused with a message on the page, and nothing is stored.
+
+### Added
+
 - A signed-in user's saved look marks every page they see, through a `look` column on the theme preference, and users with none saved and visitors see the host's default look.
 - New installs get the `look` column, and the update generator adds it to a host that installed an earlier version.
 

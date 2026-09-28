@@ -181,6 +181,11 @@ not signed in, see the host's `default_look`. A look name the host no longer
 registers leaves the page on the default. While an account's colours apply, the
 page still shows the user's own look.
 
+The colours settings page lists every registered look, with the user's current
+look chosen, and saves the one they pick. A name the host does not register is
+refused with a message and nothing is stored. With no looks registered the page
+shows no look choice.
+
 ## Preset Themes
 
 | Name     | Accent  | Surface | Custom background | Custom text | Description                    |
