@@ -110,4 +110,11 @@ class KeystoneUi::Colors::ColourChoiceTest < ActiveSupport::TestCase
 
     assert_equal [ false, "plain" ], [ choice.person_chooses?, choice.look ]
   end
+
+  test "a member whose look is no longer registered gets the account's look" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: account, accent: "emerald", surface: "stone", look: "material")
+    KeystoneUi::Colors::ThemePreference.create!(owner: person, accent: "blue", surface: "zinc", look: "plain").update_column(:look, "retired")
+
+    assert_equal "material", KeystoneUi::Colors::ColourChoice.new(person: person, account: account).look
+  end
 end
