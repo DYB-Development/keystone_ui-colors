@@ -79,4 +79,10 @@ class KeystoneUi::Colors::ThemePreferenceTest < ActiveSupport::TestCase
 
     assert pref.members_choose
   end
+
+  test "refuses a look the host has not registered" do
+    pref = KeystoneUi::Colors::ThemePreference.new(owner: user, accent: "blue", surface: "zinc", look: "retired")
+
+    assert_not pref.valid?
+  end
 end

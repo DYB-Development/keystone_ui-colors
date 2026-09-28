@@ -20,6 +20,7 @@ module KeystoneUi
       validates :template_name, inclusion: { in: Templates.names.map(&:to_s) }, allow_blank: true
       validates :mode, inclusion: { in: MODES }, allow_nil: true
       validates :text, format: { with: HEX_COLOR }, allow_blank: true
+      validate :look_is_registered, if: :will_save_change_to_look?
 
       def apply_template!(name)
         template = Templates[name]
@@ -31,6 +32,12 @@ module KeystoneUi
       end
 
       private
+
+      def look_is_registered
+        return if look.nil? || KeystoneUi.configuration.looks.key?(look)
+
+        errors.add(:look, "is not a look this app offers")
+      end
 
       def accent_is_valid
         return if SUPPORTED_ACCENTS.include?(accent) || accent&.match?(HEX_COLOR)
