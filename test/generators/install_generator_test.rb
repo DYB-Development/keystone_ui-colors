@@ -65,4 +65,10 @@ class KeystoneUi::Colors::Generators::InstallGeneratorTest < ActiveSupport::Test
   ensure
     $stdout = old
   end
+
+  test "the migration gives each preference a look" do
+    content = File.read(Dir.glob("#{destination}/db/migrate/*_create_keystone_ui_colors_theme_preferences.rb").first)
+
+    assert_includes content, "t.string :look"
+  end
 end
