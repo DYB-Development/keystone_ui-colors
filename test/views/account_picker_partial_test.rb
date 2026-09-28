@@ -21,4 +21,14 @@ class AccountPickerPartialTest < ActionView::TestCase
 
     assert_select "input[type='checkbox'][name='members_choose'][value='1'][checked]"
   end
+
+  test "the account picker offers every registered look with the account's look chosen" do
+    account = Account.create!(name: "Acme")
+    KeystoneUi::Colors::ThemePreference.create!(owner: account, accent: "emerald", surface: "stone", look: "material")
+
+    render partial: "keystone_ui/colors/settings/account_picker", locals: { person: User.create!(name: "Owner"), account: account, submit_url: "/account/colors" }
+
+    assert_select "input[name='look'][value='plain']"
+    assert_select "input[name='look'][value='material'][checked]"
+  end
 end
