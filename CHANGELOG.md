@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-09-28
+
 ### Added
 
 - A saved look the host no longer registers falls back to the account's look, or to the host's default when the account's is not registered either.
@@ -17,6 +19,10 @@
 ### Changed
 
 - Requires keystone_ui 0.18.0 or later, which registers looks.
+
+### Upgrading
+
+- Run `bin/rails generate keystone_ui:colors:update` and migrate, to add the `look` and `members_choose_look` columns.
 
 ## [0.4.1] - 2026-09-24
 
