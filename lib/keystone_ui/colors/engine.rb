@@ -13,6 +13,12 @@ module KeystoneUi
         end
       end
 
+      initializer "keystone_ui.colors.look" do
+        KeystoneUi.configure do |config|
+          config.look_supplier = ->(view) { view.keystone_look if view.respond_to?(:keystone_look) }
+        end
+      end
+
       initializer "keystone_ui.colors.tailwind" do
         KeystoneUi.configuration.tailwind_sources << root.join("app/views/**/*.erb").to_s
       end
