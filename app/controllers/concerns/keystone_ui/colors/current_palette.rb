@@ -28,6 +28,7 @@ module KeystoneUi
 
         if cached && !stale_cache?(owner, cached)
           @keystone_theme_mode = cached[:mode] || KeystoneUi::Colors.configuration.default_mode
+          @keystone_look = cached[:look]
           build_palette_css(
             cached[:accent],
             cached[:surface],
@@ -52,6 +53,7 @@ module KeystoneUi
             mode: preference.mode,
             template_name: preference.template_name,
             text: preference.text,
+            look: preference.look,
             updated_at: preference.updated_at.to_i
           }
         end
