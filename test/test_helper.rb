@@ -15,6 +15,7 @@ ActiveRecord::Schema.define do
     t.string :text
     t.string :look
     t.boolean :members_choose, default: true, null: false
+    t.boolean :members_choose_look, default: true, null: false
     t.references :owner, polymorphic: true, null: false
     t.timestamps
   end

@@ -28,7 +28,13 @@ module KeystoneUi
       end
 
       def look
-        (own_preference&.look if KeystoneUi::Colors.configuration.user_looks) || (account_preference&.look if KeystoneUi::Colors.configuration.account_looks)
+        (own_preference&.look if person_chooses_look?) || (account_preference&.look if KeystoneUi::Colors.configuration.account_looks)
+      end
+
+      def person_chooses_look?
+        return false unless KeystoneUi::Colors.configuration.user_looks
+
+        account_preference.nil? || account_preference.members_choose_look
       end
 
       def custom_offered?
