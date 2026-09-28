@@ -69,4 +69,14 @@ class PickerPartialTest < ActionView::TestCase
 
     assert_select "input[name='look'][value=''][checked]"
   end
+
+  test "the picker shows the app's name for its own look" do
+    KeystoneUi::Colors.configuration.app_look_label = "DYB"
+
+    render partial: "keystone_ui/colors/settings/picker", locals: { person: User.create!(name: "Test"), account: nil, submit_url: "/colors" }
+
+    assert_select "label", text: /DYB/
+  ensure
+    KeystoneUi::Colors.reset_configuration!
+  end
 end
