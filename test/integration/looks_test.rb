@@ -67,4 +67,11 @@ class LooksTest < ActionDispatch::IntegrationTest
     assert_select "input[name='look'][value='plain']"
     assert_select "input[name='look'][value='material'][checked]"
   end
+
+  test "saving a look the host does not offer shows why it was refused" do
+    patch "/keystone_ui_colors", params: { accent: "blue", surface: "zinc", look: "retired" }
+
+    assert_response :unprocessable_entity
+    assert_includes response.body, "Look is not a look this app offers"
+  end
 end
