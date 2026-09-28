@@ -92,4 +92,20 @@ class LooksTest < ActionDispatch::IntegrationTest
   ensure
     KeystoneUi::Colors.configuration.user_looks = true
   end
+
+  test "the settings page selects no look when the saved look is no longer registered" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: user, accent: "blue", surface: "zinc", look: "plain").update_column(:look, "retired")
+
+    get "/keystone_ui_colors"
+
+    assert_select "input[name='look'][checked]", 0
+  end
+
+  test "the settings page still saves when the saved look is no longer registered" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: user, accent: "blue", surface: "zinc", look: "plain").update_column(:look, "retired")
+
+    patch "/keystone_ui_colors", params: { accent: "emerald", surface: "zinc" }
+
+    assert_equal "emerald", KeystoneUi::Colors::ThemePreference.find_by(owner: user).accent
+  end
 end
