@@ -74,4 +74,12 @@ class LooksTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
     assert_includes response.body, "Look is not a look this app offers"
   end
+
+  test "the settings page offers no look when the host registers none" do
+    KeystoneUi.configuration.stub(:looks, {}) do
+      get "/keystone_ui_colors"
+    end
+
+    assert_select ".ks-section-title", text: "Look", count: 0
+  end
 end
