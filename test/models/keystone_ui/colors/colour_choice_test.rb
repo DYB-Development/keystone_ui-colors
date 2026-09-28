@@ -87,4 +87,12 @@ class KeystoneUi::Colors::ColourChoiceTest < ActiveSupport::TestCase
 
     assert_nil KeystoneUi::Colors::ColourChoice.new(person: person, account: account).look
   end
+
+  test "a member's own look gives way to the account's when the host keeps users off their own" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: account, accent: "emerald", surface: "stone", look: "material")
+    KeystoneUi::Colors::ThemePreference.create!(owner: person, accent: "blue", surface: "zinc", look: "plain")
+    KeystoneUi::Colors.configuration.user_looks = false
+
+    assert_equal "material", KeystoneUi::Colors::ColourChoice.new(person: person, account: account).look
+  end
 end

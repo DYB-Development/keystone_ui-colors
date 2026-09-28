@@ -28,7 +28,7 @@ module KeystoneUi
       end
 
       def look
-        own_preference&.look || (account_preference&.look if KeystoneUi::Colors.configuration.account_looks)
+        (own_preference&.look if KeystoneUi::Colors.configuration.user_looks) || (account_preference&.look if KeystoneUi::Colors.configuration.account_looks)
       end
 
       def custom_offered?
