@@ -49,6 +49,15 @@ module KeystoneUi
           )
         end
 
+        def add_members_choose_look_migration
+          return if column_migrated?(:members_choose_look)
+
+          migration_template(
+            File.expand_path("templates/add_members_choose_look_to_keystone_ui_colors_theme_preferences.rb.erb", __dir__),
+            "db/migrate/add_members_choose_look_to_keystone_ui_colors_theme_preferences.rb"
+          )
+        end
+
         def copy_stimulus_controller
           copy_file "theme_settings_controller.js",
             "app/javascript/controllers/keystone_ui/colors/theme_settings_controller.js"
