@@ -45,4 +45,8 @@ class KeystoneUi::Colors::ConfigurationTest < ActiveSupport::TestCase
   test "accounts may choose a look by default" do
     assert_equal true, KeystoneUi::Colors::Configuration.new.account_looks
   end
+
+  test "the app's own look is called Classic by default" do
+    assert_equal "Classic", KeystoneUi::Colors::Configuration.new.app_look_label
+  end
 end

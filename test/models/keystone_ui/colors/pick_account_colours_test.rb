@@ -66,4 +66,12 @@ class KeystoneUi::Colors::PickAccountColoursTest < ActiveSupport::TestCase
 
     refute account_preference.members_choose_look
   end
+
+  test "picking App default clears the account's look" do
+    pick(accent: "emerald", surface: "stone", look: "material")
+
+    pick(accent: "emerald", surface: "stone", look: "")
+
+    assert_nil account_preference.look
+  end
 end

@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- Both pickers offer the app's own look ahead of the registered looks, labelled "Classic" unless the app sets `app_look_label`. It is chosen when no look is saved, and saving it clears the saved look, so a person or account can go back to the app's own look.
+
 ## [0.5.0] - 2026-09-28
 
 ### Added

@@ -12,7 +12,7 @@ module KeystoneUi
 
       def call
         preference.assign_attributes(chosen_colours)
-        preference.look = @values[:look] if @values.key?(:look) && @look_allowed
+        preference.look = @values[:look].presence if @values.key?(:look) && @look_allowed
 
         return Refusal.new(preference.errors.full_messages.first) unless preference.save
 
