@@ -2,6 +2,15 @@
 
 ## [Unreleased]
 
+### Added
+
+- A signed-in user's saved look marks every page they see, through a `look` column on the theme preference, and users with none saved and visitors see the host's default look.
+- New installs get the `look` column, and the update generator adds it to a host that installed an earlier version.
+
+### Changed
+
+- Requires keystone_ui 0.18.0 or later, which registers looks.
+
 ## [0.4.1] - 2026-09-24
 
 ### Changed

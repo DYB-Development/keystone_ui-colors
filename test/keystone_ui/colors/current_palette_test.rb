@@ -64,6 +64,7 @@ class KeystoneUi::Colors::CurrentPaletteTest < ActiveSupport::TestCase
       mode: nil,
       template_name: nil,
       text: nil,
+      look: nil,
       updated_at: pref.updated_at.to_i
     }, session[:keystone_ui_colors_palette])
 
@@ -236,5 +237,26 @@ class KeystoneUi::Colors::CurrentPaletteTest < ActiveSupport::TestCase
     end
 
     assert_includes cached.keystone_palette_css, "--color-accent-500: #10b981"
+  end
+
+  test "knows the saved look when the palette comes from the session cache" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: user, accent: "blue", surface: "zinc", look: "material")
+    session = {}
+    controller_class.new(user: user, session: session).set_current_palette
+    cached = controller_class.new(user: user, session: session)
+
+    cached.set_current_palette
+
+    assert_equal "material", cached.keystone_look
+  end
+
+  test "rereads a preference cached before looks were kept" do
+    pref = KeystoneUi::Colors::ThemePreference.create!(owner: user, accent: "blue", surface: "zinc", look: "material")
+    session = { keystone_ui_colors_palette: { accent: pref.accent, surface: pref.surface, mode: nil, text: nil, updated_at: pref.updated_at.to_i } }
+    controller = controller_class.new(user: user, session: session)
+
+    controller.set_current_palette
+
+    assert_equal "material", controller.keystone_look
   end
 end

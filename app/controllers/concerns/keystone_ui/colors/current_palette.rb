@@ -8,7 +8,7 @@ module KeystoneUi
       extend ActiveSupport::Concern
 
       included do
-        helper_method :keystone_palette_css, :keystone_theme_mode if respond_to?(:helper_method)
+        helper_method :keystone_palette_css, :keystone_theme_mode, :keystone_look if respond_to?(:helper_method)
       end
 
       class_methods do
@@ -28,6 +28,7 @@ module KeystoneUi
 
         if cached && !stale_cache?(owner, cached)
           @keystone_theme_mode = cached[:mode] || KeystoneUi::Colors.configuration.default_mode
+          @keystone_look = cached[:look]
           build_palette_css(
             cached[:accent],
             cached[:surface],
@@ -38,6 +39,7 @@ module KeystoneUi
 
         preference = KeystoneUi::Colors::ThemePreference.find_by(owner: owner)
         @keystone_theme_mode = preference&.mode || KeystoneUi::Colors.configuration.default_mode
+        @keystone_look = preference&.look
         accent = preference&.accent || KeystoneUi::Colors.configuration.default_accent
         surface = preference&.surface || KeystoneUi::Colors.configuration.default_surface
 
@@ -51,6 +53,7 @@ module KeystoneUi
             mode: preference.mode,
             template_name: preference.template_name,
             text: preference.text,
+            look: preference.look,
             updated_at: preference.updated_at.to_i
           }
         end
@@ -59,6 +62,7 @@ module KeystoneUi
       def apply_chosen_palette(owner, account)
         choice = KeystoneUi::Colors::ColourChoice.new(person: owner, account: account)
         @keystone_theme_mode = choice.mode
+        @keystone_look = KeystoneUi::Colors::ThemePreference.find_by(owner: owner)&.look
         write_palette(choice.applying_preference)
       end
 
@@ -77,6 +81,10 @@ module KeystoneUi
 
       def keystone_theme_mode
         @keystone_theme_mode
+      end
+
+      def keystone_look
+        @keystone_look
       end
 
       private
@@ -117,7 +125,7 @@ module KeystoneUi
       end
 
       def stale_cache?(owner, cached)
-        return true unless cached.key?(:text)
+        return true unless cached.key?(:text) && cached.key?(:look)
 
         updated_at = KeystoneUi::Colors::ThemePreference
           .where(owner: owner)

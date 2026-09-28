@@ -13,6 +13,7 @@ ActiveRecord::Schema.define do
     t.string :template_name
     t.string :mode
     t.string :text
+    t.string :look
     t.boolean :members_choose, default: true, null: false
     t.references :owner, polymorphic: true, null: false
     t.timestamps
@@ -28,6 +29,12 @@ ActiveRecord::Schema.define do
 end
 
 Rails.application.config.action_dispatch.show_exceptions = :none
+
+KeystoneUi.configure do |config|
+  config.register_look :plain, "/looks/plain.css"
+  config.register_look :material, "/looks/material.css"
+  config.default_look = :plain
+end
 
 class ActiveSupport::TestCase
   # Run tests in parallel with specified workers
