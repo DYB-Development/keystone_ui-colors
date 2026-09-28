@@ -68,6 +68,7 @@ module KeystoneUi
 
       def apply_host_palette
         @keystone_theme_mode = KeystoneUi::Colors.configuration.default_mode
+        @keystone_look = nil
         build_palette_css(
           KeystoneUi::Colors.configuration.default_accent,
           KeystoneUi::Colors.configuration.default_surface,

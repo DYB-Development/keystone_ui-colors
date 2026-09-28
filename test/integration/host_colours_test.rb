@@ -23,4 +23,12 @@ class HostColoursTest < ActionDispatch::IntegrationTest
 
     assert_select "html[data-theme='light']"
   end
+
+  test "a page kept on the host's colours shows the host's default look over a user's" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: user, accent: "emerald", surface: "stone", look: "material")
+
+    get "/"
+
+    assert_select "html[data-look='plain']"
+  end
 end
