@@ -198,6 +198,13 @@ The settings page then shows no look choice, a save ignores any look sent with
 it and keeps the rest, and every page shows the host's default look, even for a
 user who saved one earlier. `user_looks` is true by default.
 
+An account admin picks the account's look on the account picker, which lists
+every registered look with the account's current one chosen. A member with no
+look of their own sees the account's look, and a member who chose one keeps it.
+A host that keeps accounts off looks sets `account_looks` to false, and the
+account picker then shows no look choice and a saved account look is not
+applied. `account_looks` is true by default.
+
 ## Preset Themes
 
 | Name     | Accent  | Surface | Custom background | Custom text | Description                    |

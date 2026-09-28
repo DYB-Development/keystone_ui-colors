@@ -9,6 +9,10 @@
     <div style="display: flex; flex-direction: column; gap: 2rem;">
       <%= render partial: "keystone_ui/colors/settings/colours", locals: { preference: preference } %>
 
+      <% if KeystoneUi.configuration.looks.any? && KeystoneUi::Colors.configuration.account_looks %>
+        <%= render partial: "keystone_ui/colors/settings/looks", locals: { preference: preference } %>
+      <% end %>
+
       <%= ui_section(title: "Members", spacing: :sm) do %>
         <%= hidden_field_tag "members_choose", "0", id: nil %>
         <%= ui_checkbox_row(name: "members_choose", value: "1", label: "Members choose their own colours", checked: preference.members_choose) %>

@@ -28,7 +28,7 @@ module KeystoneUi
 
         if cached && !stale_cache?(owner, cached)
           @keystone_theme_mode = cached[:mode] || KeystoneUi::Colors.configuration.default_mode
-          @keystone_look = cached[:look]
+          @keystone_look = own_look(cached[:look])
           build_palette_css(
             cached[:accent],
             cached[:surface],
@@ -39,7 +39,7 @@ module KeystoneUi
 
         preference = KeystoneUi::Colors::ThemePreference.find_by(owner: owner)
         @keystone_theme_mode = preference&.mode || KeystoneUi::Colors.configuration.default_mode
-        @keystone_look = preference&.look
+        @keystone_look = own_look(preference&.look)
         accent = preference&.accent || KeystoneUi::Colors.configuration.default_accent
         surface = preference&.surface || KeystoneUi::Colors.configuration.default_surface
 
@@ -62,7 +62,7 @@ module KeystoneUi
       def apply_chosen_palette(owner, account)
         choice = KeystoneUi::Colors::ColourChoice.new(person: owner, account: account)
         @keystone_theme_mode = choice.mode
-        @keystone_look = KeystoneUi::Colors::ThemePreference.find_by(owner: owner)&.look
+        @keystone_look = choice.look
         write_palette(choice.applying_preference)
       end
 
@@ -84,10 +84,14 @@ module KeystoneUi
       end
 
       def keystone_look
-        @keystone_look if KeystoneUi::Colors.configuration.user_looks
+        @keystone_look
       end
 
       private
+
+      def own_look(look)
+        look if KeystoneUi::Colors.configuration.user_looks
+      end
 
       def keystone_account
         method = KeystoneUi::Colors.configuration.current_account_method

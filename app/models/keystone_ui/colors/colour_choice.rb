@@ -27,6 +27,10 @@ module KeystoneUi
         own_preference&.mode || KeystoneUi::Colors.configuration.default_mode
       end
 
+      def look
+        (own_preference&.look if KeystoneUi::Colors.configuration.user_looks) || (account_preference&.look if KeystoneUi::Colors.configuration.account_looks)
+      end
+
       def custom_offered?
         preference = applying_preference
         background = CustomColours.new(template_name: preference&.template_name, surface: preference&.surface, text: preference&.text).background

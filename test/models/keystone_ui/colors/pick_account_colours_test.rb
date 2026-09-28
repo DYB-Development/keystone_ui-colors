@@ -46,4 +46,18 @@ class KeystoneUi::Colors::PickAccountColoursTest < ActiveSupport::TestCase
 
     refute pick(template_name: "forest").ok?
   end
+
+  test "picking a look keeps it on the account" do
+    pick(accent: "emerald", surface: "stone", look: "material")
+
+    assert_equal "material", account_preference.look
+  end
+
+  test "a look in an account save is ignored when the host lets accounts choose none" do
+    KeystoneUi::Colors.configuration.account_looks = false
+
+    pick(accent: "emerald", surface: "stone", look: "material")
+
+    assert_nil account_preference.look
+  end
 end

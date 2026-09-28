@@ -67,4 +67,32 @@ class KeystoneUi::Colors::ColourChoiceTest < ActiveSupport::TestCase
 
     assert_equal "dark", KeystoneUi::Colors::ColourChoice.new(person: person, account: account).mode
   end
+
+  test "a member with no look of their own gets the account's look" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: account, accent: "emerald", surface: "stone", look: "material")
+
+    assert_equal "material", KeystoneUi::Colors::ColourChoice.new(person: person, account: account).look
+  end
+
+  test "a member's own look wins over the account's" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: account, accent: "emerald", surface: "stone", look: "material")
+    KeystoneUi::Colors::ThemePreference.create!(owner: person, accent: "blue", surface: "zinc", look: "plain")
+
+    assert_equal "plain", KeystoneUi::Colors::ColourChoice.new(person: person, account: account).look
+  end
+
+  test "an account's look is not applied when the host lets accounts choose none" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: account, accent: "emerald", surface: "stone", look: "material")
+    KeystoneUi::Colors.configuration.account_looks = false
+
+    assert_nil KeystoneUi::Colors::ColourChoice.new(person: person, account: account).look
+  end
+
+  test "a member's own look gives way to the account's when the host keeps users off their own" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: account, accent: "emerald", surface: "stone", look: "material")
+    KeystoneUi::Colors::ThemePreference.create!(owner: person, accent: "blue", surface: "zinc", look: "plain")
+    KeystoneUi::Colors.configuration.user_looks = false
+
+    assert_equal "material", KeystoneUi::Colors::ColourChoice.new(person: person, account: account).look
+  end
 end

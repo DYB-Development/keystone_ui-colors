@@ -41,4 +41,8 @@ class KeystoneUi::Colors::ConfigurationTest < ActiveSupport::TestCase
   test "users may choose their own look by default" do
     assert_equal true, KeystoneUi::Colors::Configuration.new.user_looks
   end
+
+  test "accounts may choose a look by default" do
+    assert_equal true, KeystoneUi::Colors::Configuration.new.account_looks
+  end
 end

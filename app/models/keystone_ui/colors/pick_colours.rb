@@ -3,15 +3,16 @@
 module KeystoneUi
   module Colors
     class PickColours
-      def initialize(values:, person: nil, account: nil, owner: nil)
+      def initialize(values:, person: nil, account: nil, owner: nil, look_allowed: KeystoneUi::Colors.configuration.user_looks)
         @owner = person || owner
+        @look_allowed = look_allowed
         @account = account
         @values = values
       end
 
       def call
         preference.assign_attributes(chosen_colours)
-        preference.look = @values[:look] if @values.key?(:look) && KeystoneUi::Colors.configuration.user_looks
+        preference.look = @values[:look] if @values.key?(:look) && @look_allowed
 
         return Refusal.new(preference.errors.full_messages.first) unless preference.save
 
