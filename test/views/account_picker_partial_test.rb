@@ -41,4 +41,10 @@ class AccountPickerPartialTest < ActionView::TestCase
   ensure
     KeystoneUi::Colors.reset_configuration!
   end
+
+  test "the account picker lets members choose their own look by default" do
+    render_picker
+
+    assert_select "input[type='checkbox'][name='members_choose_look'][value='1'][checked]"
+  end
 end

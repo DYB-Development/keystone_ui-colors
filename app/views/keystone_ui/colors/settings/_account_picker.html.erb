@@ -16,6 +16,10 @@
       <%= ui_section(title: "Members", spacing: :sm) do %>
         <%= hidden_field_tag "members_choose", "0", id: nil %>
         <%= ui_checkbox_row(name: "members_choose", value: "1", label: "Members choose their own colours", checked: preference.members_choose) %>
+        <% if KeystoneUi.configuration.looks.any? && KeystoneUi::Colors.configuration.account_looks %>
+          <%= hidden_field_tag "members_choose_look", "0", id: nil %>
+          <%= ui_checkbox_row(name: "members_choose_look", value: "1", label: "Members choose their own look", checked: preference.members_choose_look) %>
+        <% end %>
       <% end %>
 
       <div>
