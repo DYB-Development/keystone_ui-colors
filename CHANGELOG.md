@@ -4,6 +4,7 @@
 
 ### Added
 
+- A saved look the host no longer registers falls back to the account's look, or to the host's default when the account's is not registered either.
 - A page kept on the host's colours with `keystone_host_colors` also shows the host's default look, for the same `only:` and `except:` actions.
 - An account decides whether its members choose their own look with a switch on the account picker, separate from the colours switch, and the update generator adds its column.
 - An account admin picks the account's look on the account picker, and members with no look of their own see it. A host can turn account looks off with `account_looks`.

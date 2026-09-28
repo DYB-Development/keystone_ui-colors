@@ -28,7 +28,7 @@ module KeystoneUi
       end
 
       def look
-        (own_preference&.look if person_chooses_look?) || (account_preference&.look if KeystoneUi::Colors.configuration.account_looks)
+        [ (own_preference&.look if person_chooses_look?), (account_preference&.look if KeystoneUi::Colors.configuration.account_looks) ].find { |look| KeystoneUi.configuration.looks.key?(look) }
       end
 
       def person_chooses_look?
