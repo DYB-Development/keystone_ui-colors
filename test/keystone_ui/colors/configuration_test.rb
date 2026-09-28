@@ -37,4 +37,8 @@ class KeystoneUi::Colors::ConfigurationTest < ActiveSupport::TestCase
   test "names no current account method by default" do
     assert_equal nil, KeystoneUi::Colors::Configuration.new.current_account_method
   end
+
+  test "users may choose their own look by default" do
+    assert_equal true, KeystoneUi::Colors::Configuration.new.user_looks
+  end
 end

@@ -80,4 +80,16 @@ class KeystoneUi::Colors::PickColoursTest < ActiveSupport::TestCase
 
     assert_equal "material", KeystoneUi::Colors::ThemePreference.find_by(owner: user).look
   end
+
+  test "a look in a save is ignored when the host keeps users on its look, and the rest is kept" do
+    user = User.create!(name: "Test")
+    KeystoneUi::Colors.configuration.user_looks = false
+
+    KeystoneUi::Colors::PickColours.new(owner: user, values: { accent: "emerald", surface: "zinc", look: "material" }).call
+
+    preference = KeystoneUi::Colors::ThemePreference.find_by(owner: user)
+    assert_equal [ "emerald", nil ], [ preference.accent, preference.look ]
+  ensure
+    KeystoneUi::Colors.reset_configuration!
+  end
 end

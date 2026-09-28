@@ -84,7 +84,7 @@ module KeystoneUi
       end
 
       def keystone_look
-        @keystone_look
+        @keystone_look if KeystoneUi::Colors.configuration.user_looks
       end
 
       private

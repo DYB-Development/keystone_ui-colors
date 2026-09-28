@@ -82,4 +82,14 @@ class LooksTest < ActionDispatch::IntegrationTest
 
     assert_select ".ks-section-title", text: "Look", count: 0
   end
+
+  test "the settings page offers no look when the host keeps users on its look" do
+    KeystoneUi::Colors.configuration.user_looks = false
+
+    get "/keystone_ui_colors"
+
+    assert_select ".ks-section-title", text: "Look", count: 0
+  ensure
+    KeystoneUi::Colors.configuration.user_looks = true
+  end
 end

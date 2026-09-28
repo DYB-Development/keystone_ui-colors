@@ -3,7 +3,7 @@
 module KeystoneUi
   module Colors
     class Configuration
-      attr_accessor :current_owner_method, :authentication_method, :default_template, :default_accent, :default_surface, :default_mode, :default_background, :default_text, :account_colors, :current_account_method, :layout
+      attr_accessor :current_owner_method, :authentication_method, :default_template, :default_accent, :default_surface, :default_mode, :default_background, :default_text, :account_colors, :current_account_method, :layout, :user_looks
 
       def initialize
         @current_owner_method = :current_user
@@ -17,6 +17,7 @@ module KeystoneUi
         @account_colors = true
         @current_account_method = nil
         @layout = "application"
+        @user_looks = true
       end
     end
 

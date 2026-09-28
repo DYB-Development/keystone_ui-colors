@@ -4,6 +4,7 @@
 
 ### Added
 
+- A host can keep every user on its default look by setting `user_looks` to false, which hides the look choice, ignores a look sent with a save, and sets aside looks users saved earlier.
 - A user picks a look on the colours settings page, which lists every registered look with their current one chosen.
 - Saving a look the host does not register is refused with a message on the page, and nothing is stored.
 - A signed-in user's saved look marks every page they see, through a `look` column on the theme preference, and users with none saved and visitors see the host's default look.

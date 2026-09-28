@@ -186,6 +186,18 @@ look chosen, and saves the one they pick. A name the host does not register is
 refused with a message and nothing is stored. With no looks registered the page
 shows no look choice.
 
+A host that wants every user on one look sets `user_looks` to false:
+
+```ruby
+KeystoneUi::Colors.configure do |config|
+  config.user_looks = false
+end
+```
+
+The settings page then shows no look choice, a save ignores any look sent with
+it and keeps the rest, and every page shows the host's default look, even for a
+user who saved one earlier. `user_looks` is true by default.
+
 ## Preset Themes
 
 | Name     | Accent  | Surface | Custom background | Custom text | Description                    |
