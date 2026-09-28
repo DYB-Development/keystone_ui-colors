@@ -16,7 +16,7 @@
         <%= render partial: "keystone_ui/colors/settings/colours", locals: { preference: preference } %>
       <% end %>
 
-      <% if KeystoneUi.configuration.looks.any? && KeystoneUi::Colors.configuration.user_looks %>
+      <% if KeystoneUi.configuration.looks.any? && choice.person_chooses_look? %>
         <%= render partial: "keystone_ui/colors/settings/looks", locals: { preference: preference } %>
       <% end %>
 
