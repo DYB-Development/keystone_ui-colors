@@ -73,4 +73,11 @@ class KeystoneUi::Colors::ColourChoiceTest < ActiveSupport::TestCase
 
     assert_equal "material", KeystoneUi::Colors::ColourChoice.new(person: person, account: account).look
   end
+
+  test "a member's own look wins over the account's" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: account, accent: "emerald", surface: "stone", look: "material")
+    KeystoneUi::Colors::ThemePreference.create!(owner: person, accent: "blue", surface: "zinc", look: "plain")
+
+    assert_equal "plain", KeystoneUi::Colors::ColourChoice.new(person: person, account: account).look
+  end
 end

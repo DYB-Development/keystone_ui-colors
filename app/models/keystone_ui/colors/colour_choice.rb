@@ -28,7 +28,7 @@ module KeystoneUi
       end
 
       def look
-        account_preference&.look
+        own_preference&.look || account_preference&.look
       end
 
       def custom_offered?
