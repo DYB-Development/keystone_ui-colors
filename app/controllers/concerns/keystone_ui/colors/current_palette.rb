@@ -62,7 +62,7 @@ module KeystoneUi
       def apply_chosen_palette(owner, account)
         choice = KeystoneUi::Colors::ColourChoice.new(person: owner, account: account)
         @keystone_theme_mode = choice.mode
-        @keystone_look = KeystoneUi::Colors::ThemePreference.find_by(owner: owner)&.look
+        @keystone_look = choice.look
         write_palette(choice.applying_preference)
       end
 

@@ -80,4 +80,10 @@ class KeystoneUi::Colors::AccountPaletteTest < ActiveSupport::TestCase
 
     assert_equal "material", palette_for(user, account).keystone_look
   end
+
+  test "a member with no look of their own sees the account's look" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: account, accent: "emerald", surface: "stone", look: "material")
+
+    assert_equal "material", palette_for(user, account).keystone_look
+  end
 end
