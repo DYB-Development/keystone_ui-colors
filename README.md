@@ -179,8 +179,9 @@ Such a page also shows the host's default look, over any look a user or account 
 When the host registers looks with keystone_ui, a signed-in user's preference can
 hold one in its `look` column, and every page they see carries it as
 `data-look` on the `html` tag. A user with no saved look, and a visitor who is
-not signed in, see the host's `default_look`. A look name the host no longer
-registers leaves the page on the default. While an account's colours apply, the
+not signed in, see the host's `default_look`. A saved look the host no longer registers is passed over for the account's look,
+or for the host's default when the account's look is not registered either. The
+settings page then shows no look selected and still saves. While an account's colours apply, the
 page still shows the user's own look.
 
 The colours settings page lists every registered look, with the user's current
