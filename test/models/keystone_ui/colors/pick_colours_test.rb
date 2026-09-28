@@ -92,4 +92,13 @@ class KeystoneUi::Colors::PickColoursTest < ActiveSupport::TestCase
   ensure
     KeystoneUi::Colors.reset_configuration!
   end
+
+  test "picking App default clears the look a person saved" do
+    user = User.create!(name: "Test")
+    KeystoneUi::Colors::ThemePreference.create!(owner: user, accent: "blue", surface: "zinc", look: "material")
+
+    KeystoneUi::Colors::PickColours.new(owner: user, values: { accent: "blue", surface: "zinc", look: "" }).call
+
+    assert_nil KeystoneUi::Colors::ThemePreference.find_by(owner: user).look
+  end
 end
