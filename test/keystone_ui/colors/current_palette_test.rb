@@ -259,4 +259,16 @@ class KeystoneUi::Colors::CurrentPaletteTest < ActiveSupport::TestCase
 
     assert_equal "material", controller.keystone_look
   end
+
+  test "a saved look gives way to the host's default when the host keeps users on its look" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: user, accent: "blue", surface: "zinc", look: "material")
+    KeystoneUi::Colors.configuration.user_looks = false
+    controller = controller_class.new(user: user)
+
+    controller.set_current_palette
+
+    assert_nil controller.keystone_look
+  ensure
+    KeystoneUi::Colors.reset_configuration!
+  end
 end
