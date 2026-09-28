@@ -57,4 +57,10 @@ class PickerPartialTest < ActionView::TestCase
 
     assert_select ".ks-section-title", text: "Look", count: 0
   end
+
+  test "the picker offers App default ahead of the registered looks" do
+    render partial: "keystone_ui/colors/settings/picker", locals: { person: User.create!(name: "Test"), account: nil, submit_url: "/colors" }
+
+    assert_equal "", css_select("input[name='look']").first["value"]
+  end
 end
