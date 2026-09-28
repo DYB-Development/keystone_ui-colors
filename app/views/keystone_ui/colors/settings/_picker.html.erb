@@ -16,6 +16,10 @@
         <%= render partial: "keystone_ui/colors/settings/colours", locals: { preference: preference } %>
       <% end %>
 
+      <% if KeystoneUi.configuration.looks.any? %>
+        <%= render partial: "keystone_ui/colors/settings/looks", locals: { preference: preference } %>
+      <% end %>
+
       <%= ui_section(title: "Mode", spacing: :sm) do %>
         <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
           <% KeystoneUi::Colors::ThemePreference::MODES.each do |mode| %>

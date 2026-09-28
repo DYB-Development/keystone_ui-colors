@@ -72,4 +72,12 @@ class KeystoneUi::Colors::PickColoursTest < ActiveSupport::TestCase
     kept = KeystoneUi::Colors::ThemePreference.find_by(owner: user)
     assert_equal [ "dark", KeystoneUi::Colors.configuration.default_accent ], [ kept.mode, kept.accent ]
   end
+
+  test "picking a look keeps it on the person" do
+    user = User.create!(name: "Test")
+
+    KeystoneUi::Colors::PickColours.new(owner: user, values: { accent: "blue", surface: "zinc", look: "material" }).call
+
+    assert_equal "material", KeystoneUi::Colors::ThemePreference.find_by(owner: user).look
+  end
 end

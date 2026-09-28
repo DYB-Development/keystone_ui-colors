@@ -79,4 +79,17 @@ class KeystoneUi::Colors::ThemePreferenceTest < ActiveSupport::TestCase
 
     assert pref.members_choose
   end
+
+  test "refuses a look the host has not registered" do
+    pref = KeystoneUi::Colors::ThemePreference.new(owner: user, accent: "blue", surface: "zinc", look: "retired")
+
+    assert_not pref.valid?
+  end
+
+  test "saves other changes to a preference whose look the host no longer registers" do
+    pref = KeystoneUi::Colors::ThemePreference.create!(owner: user, accent: "blue", surface: "zinc", look: "material")
+    pref.update_column(:look, "retired")
+
+    assert pref.update(accent: "emerald")
+  end
 end

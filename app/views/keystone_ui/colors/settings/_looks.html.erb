@@ -1,0 +1,7 @@
+<%= ui_section(title: "Look", spacing: :sm) do %>
+  <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+    <% KeystoneUi.configuration.looks.each_key do |look| %>
+      <%= ui_radio_card(name: "look", value: look, label: look.humanize, checked: (preference.look || KeystoneUi.configuration.default_look) == look) %>
+    <% end %>
+  </div>
+<% end %>

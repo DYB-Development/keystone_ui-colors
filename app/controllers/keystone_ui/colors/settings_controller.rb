@@ -14,7 +14,10 @@ module KeystoneUi
       def update
         result = PickColours.new(person: current_owner, account: nil, values: preference_params).call
 
-        return render :show, status: :unprocessable_entity unless result.ok?
+        unless result.ok?
+          flash.now[:alert] = result.message
+          return render :show, status: :unprocessable_entity
+        end
 
         ForgetTheThemeChoice.new(controller: self).call
         redirect_to keystone_ui_colors.settings_path, notice: "Color settings updated."
@@ -29,7 +32,7 @@ module KeystoneUi
       end
 
       def preference_params
-        params.permit(:accent, :surface, :text, :template_name, :mode).to_h.symbolize_keys
+        params.permit(:accent, :surface, :text, :template_name, :mode, :look).to_h.symbolize_keys
       end
     end
   end

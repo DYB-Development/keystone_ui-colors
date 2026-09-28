@@ -1,5 +1,9 @@
 <%= ui_page_header(title: "Color Settings") %>
 
+<% if flash[:alert] %>
+  <%= ui_alert(message: flash[:alert], type: :error) %>
+<% end %>
+
 <% if flash[:notice] %>
   <%= ui_alert(message: flash[:notice], type: :success) %>
 <% end %>

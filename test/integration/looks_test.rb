@@ -11,6 +11,7 @@ class LooksTest < ActionDispatch::IntegrationTest
     uid = user.id
     KeystoneUi::Colors::ApplicationController.define_method(:current_user) { User.find(uid) }
     KeystoneUi::Colors::ApplicationController.define_method(:authenticate_user!) { true }
+    KeystoneUi::Colors::ApplicationController.allow_forgery_protection = false
   end
 
   def teardown
@@ -48,5 +49,37 @@ class LooksTest < ActionDispatch::IntegrationTest
     get "/keystone_ui_colors"
 
     assert_select "html[data-look='material']"
+  end
+
+  test "a look saved on the settings page marks the next page" do
+    patch "/keystone_ui_colors", params: { accent: "blue", surface: "zinc", look: "material" }
+
+    get "/keystone_ui_colors"
+
+    assert_select "html[data-look='material']"
+  end
+
+  test "the settings page offers every registered look with the user's look chosen" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: user, accent: "blue", surface: "zinc", look: "material")
+
+    get "/keystone_ui_colors"
+
+    assert_select "input[name='look'][value='plain']"
+    assert_select "input[name='look'][value='material'][checked]"
+  end
+
+  test "saving a look the host does not offer shows why it was refused" do
+    patch "/keystone_ui_colors", params: { accent: "blue", surface: "zinc", look: "retired" }
+
+    assert_response :unprocessable_entity
+    assert_includes response.body, "Look is not a look this app offers"
+  end
+
+  test "the settings page offers no look when the host registers none" do
+    KeystoneUi.configuration.stub(:looks, {}) do
+      get "/keystone_ui_colors"
+    end
+
+    assert_select ".ks-section-title", text: "Look", count: 0
   end
 end
