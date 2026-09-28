@@ -184,8 +184,10 @@ or for the host's default when the account's look is not registered either. The
 settings page then shows no look selected and still saves. While an account's colours apply, the
 page still shows the user's own look.
 
-The colours settings page lists every registered look, with the user's current
-look chosen, and saves the one they pick. A name the host does not register is
+The colours settings page lists an App default choice and then every registered
+look, with the user's current look chosen, and saves the one they pick. App
+default is chosen when no look is saved, and saving it clears the saved look, so
+the page goes back to the account's look or the app's default. A name the host does not register is
 refused with a message and nothing is stored. With no looks registered the page
 shows no look choice.
 
