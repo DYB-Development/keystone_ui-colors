@@ -95,4 +95,19 @@ class KeystoneUi::Colors::ColourChoiceTest < ActiveSupport::TestCase
 
     assert_equal "material", KeystoneUi::Colors::ColourChoice.new(person: person, account: account).look
   end
+
+  test "a member sees the account's look whatever they saved when the account keeps the look" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: account, accent: "emerald", surface: "stone", look: "material", members_choose_look: false)
+    KeystoneUi::Colors::ThemePreference.create!(owner: person, accent: "blue", surface: "zinc", look: "plain")
+
+    assert_equal "material", KeystoneUi::Colors::ColourChoice.new(person: person, account: account).look
+  end
+
+  test "an account can keep the colours while its members still choose their own look" do
+    KeystoneUi::Colors::ThemePreference.create!(owner: account, accent: "emerald", surface: "stone", look: "material", members_choose: false)
+    KeystoneUi::Colors::ThemePreference.create!(owner: person, accent: "blue", surface: "zinc", look: "plain")
+    choice = KeystoneUi::Colors::ColourChoice.new(person: person, account: account)
+
+    assert_equal [ false, "plain" ], [ choice.person_chooses?, choice.look ]
+  end
 end

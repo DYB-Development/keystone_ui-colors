@@ -71,4 +71,10 @@ class KeystoneUi::Colors::Generators::InstallGeneratorTest < ActiveSupport::Test
 
     assert_includes content, "t.string :look"
   end
+
+  test "the migration lets an account decide whether its members choose their own look" do
+    content = File.read(Dir.glob("#{destination}/db/migrate/*_create_keystone_ui_colors_theme_preferences.rb").first)
+
+    assert_includes content, "t.boolean :members_choose_look, default: true, null: false"
+  end
 end

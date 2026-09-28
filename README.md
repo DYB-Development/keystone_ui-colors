@@ -205,6 +205,12 @@ A host that keeps accounts off looks sets `account_looks` to false, and the
 account picker then shows no look choice and a saved account look is not
 applied. `account_looks` is true by default.
 
+The account picker also has a switch for whether members choose their own
+look, on by default and separate from the switch for colours. With it off, every
+member sees the account's look whatever they saved, and a member's picker shows
+no look choice. Run the update generator to add its column to an app that
+installed an earlier version.
+
 ## Preset Themes
 
 | Name     | Accent  | Surface | Custom background | Custom text | Description                    |

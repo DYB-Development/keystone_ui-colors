@@ -4,6 +4,7 @@
 
 ### Added
 
+- An account decides whether its members choose their own look with a switch on the account picker, separate from the colours switch, and the update generator adds its column.
 - An account admin picks the account's look on the account picker, and members with no look of their own see it. A host can turn account looks off with `account_looks`.
 - A host can keep every user on its default look by setting `user_looks` to false, which hides the look choice, ignores a look sent with a save, and sets aside looks users saved earlier.
 - A user picks a look on the colours settings page, which lists every registered look with their current one chosen.
