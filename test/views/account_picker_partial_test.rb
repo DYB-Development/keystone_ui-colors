@@ -47,4 +47,10 @@ class AccountPickerPartialTest < ActionView::TestCase
 
     assert_select "input[type='checkbox'][name='members_choose_look'][value='1'][checked]"
   end
+
+  test "the account picker offers App default ahead of the registered looks" do
+    render_picker
+
+    assert_equal "", css_select("input[name='look']").first["value"]
+  end
 end
