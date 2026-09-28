@@ -172,6 +172,8 @@ end
 A choice made with keystone_ui's `ui_theme_toggle` in that browser still sets
 light or dark on these pages.
 
+Such a page also shows the host's default look, over any look a user or account chose, for the same actions.
+
 ## Looks
 
 When the host registers looks with keystone_ui, a signed-in user's preference can
