@@ -11,6 +11,7 @@ module KeystoneUi
 
       def call
         preference.assign_attributes(chosen_colours)
+        preference.look = @values[:look] if @values.key?(:look)
 
         return Refusal.new(preference.errors.full_messages.first) unless preference.save
 
