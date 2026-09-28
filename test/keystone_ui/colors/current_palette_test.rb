@@ -271,4 +271,15 @@ class KeystoneUi::Colors::CurrentPaletteTest < ActiveSupport::TestCase
   ensure
     KeystoneUi::Colors.reset_configuration!
   end
+
+  test "keeping the host's colours passes only and except on to the filter that also sets the default look" do
+    filters = []
+    Class.new do
+      define_singleton_method(:before_action) { |name, **options| filters << [ name, options ] }
+      include KeystoneUi::Colors::CurrentPalette
+      keystone_host_colors(only: :index, except: :show)
+    end
+
+    assert_equal [ [ :apply_host_palette, { only: :index, except: :show } ] ], filters
+  end
 end
