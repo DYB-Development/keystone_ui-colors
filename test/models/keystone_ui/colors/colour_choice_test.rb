@@ -124,4 +124,15 @@ class KeystoneUi::Colors::ColourChoiceTest < ActiveSupport::TestCase
 
     assert_nil KeystoneUi::Colors::ColourChoice.new(person: person, account: account).look
   end
+
+  test "a choice with no saved preferences looks each owner up once however often it is asked" do
+    KeystoneUi::Colors.configuration.account_colors = true
+    choice = KeystoneUi::Colors::ColourChoice.new(person: person, account: account)
+    lookups = 0
+    counter = ->(*, payload) { lookups += 1 if payload[:name] != "SCHEMA" && payload[:sql].include?(KeystoneUi::Colors::ThemePreference.table_name) }
+
+    ActiveSupport::Notifications.subscribed(counter, "sql.active_record") { [ choice.mode, choice.look, choice.applying_preference, choice.person_chooses? ] }
+
+    assert_equal 2, lookups
+  end
 end
