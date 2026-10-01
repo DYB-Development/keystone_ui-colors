@@ -46,13 +46,16 @@ module KeystoneUi
       private
 
       def own_preference
-        @own_preference ||= ThemePreference.find_by(owner: @person)
+        return @own_preference if defined?(@own_preference)
+
+        @own_preference = ThemePreference.find_by(owner: @person)
       end
 
       def account_preference
         return nil unless @account
+        return @account_preference if defined?(@account_preference)
 
-        @account_preference ||= ThemePreference.find_by(owner: @account)
+        @account_preference = ThemePreference.find_by(owner: @account)
       end
     end
   end
