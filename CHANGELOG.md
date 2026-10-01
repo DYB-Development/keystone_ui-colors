@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.6.1] - 2026-10-01
+
 ### Fixed
 
 - A page whose person or account has no saved theme preference looks each one up once, instead of once for every colour, mode and look it reads.
