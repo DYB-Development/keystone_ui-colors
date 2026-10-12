@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.6.2] - 2026-10-12
+
 ### Fixed
 
 - Other engines mounted in the host build their links from their own routes again, because only this gem's own pages reach the host's route helpers.
