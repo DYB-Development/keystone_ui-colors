@@ -22,12 +22,6 @@ module KeystoneUi
       initializer "keystone_ui.colors.tailwind" do
         KeystoneUi.configuration.tailwind_sources << root.join("app/views/**/*.erb").to_s
       end
-
-      initializer "keystone_ui.colors.url_helpers" do
-        ActiveSupport.on_load(:action_controller) do
-          helper Rails.application.routes.url_helpers
-        end
-      end
     end
   end
 end

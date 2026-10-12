@@ -154,4 +154,10 @@ class SettingsTest < ActionDispatch::IntegrationTest
 
     assert_equal "#3b2f1e", user.reload.theme_preference.text
   end
+
+  test "the settings page draws the host layout's links written with the host's own route helpers" do
+    get "/keystone_ui_colors"
+
+    assert_select "#nav-about[href=?]", "/about"
+  end
 end

@@ -5,6 +5,7 @@ module KeystoneUi
     class ApplicationController < ::ApplicationController
       before_action { send(KeystoneUi::Colors.configuration.authentication_method) }
       helper KeystoneUiHelper
+      helper HostRoutesHelper
 
       layout -> { KeystoneUi::Colors.configuration.layout }
     end
