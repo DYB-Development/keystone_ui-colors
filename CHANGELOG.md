@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Other engines mounted in the host build their links from their own routes again, because only this gem's own pages reach the host's route helpers.
+- A link in the host layout to a route only the host has points at the host's address on this gem's pages, instead of one under the gem's mount.
+
 ## [0.6.1] - 2026-10-01
 
 ### Fixed

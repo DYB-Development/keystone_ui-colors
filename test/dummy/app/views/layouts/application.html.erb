@@ -2,7 +2,7 @@
 <html <%= keystone_theme_attributes %>>
 <head><title>Dummy</title></head>
 <body>
-<nav><%= link_to "Home", main_app.root_path, id: "nav-home" %></nav>
+<nav><%= link_to "Home", main_app.root_path, id: "nav-home" %> <%= link_to "About", about_path, id: "nav-about" %></nav>
 <%= yield %>
 </body>
 </html>
