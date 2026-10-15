@@ -1,5 +1,14 @@
 # KeystoneUi::Colors
 
+**keystone_ui-colors is retired.** No version follows 0.6.2. Use these two gems instead:
+
+- [keystone_ui-preferences](https://github.com/DYB-Development/keystone_ui-preferences) saves each person's and each account's colours, mode and look.
+- [keystone_ui-looks](https://github.com/DYB-Development/keystone_ui-looks) holds the colour palettes, the colour templates and the looks.
+
+Everything below this section documents 0.6.2, for apps that have not moved yet.
+
+## About 0.6.2
+
 A Rails engine that adds per-user color palette persistence and preset themes. Companion to [keystone_ui](https://github.com/DYB-Development/keystone_ui).
 
 Users pick from preset themes or custom hex colors. The gem generates CSS custom properties (`--color-accent-*`, `--color-surface-*`) and injects them via a `<style>` tag -- no frontend build step required.
