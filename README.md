@@ -9,22 +9,22 @@ The sections from [About 0.6.2](#about-062) onward document 0.6.2, for apps that
 
 ## Moving to keystone_ui-preferences
 
-keystone_ui-preferences depends on keystone_ui-looks, so the app's Gemfile needs only keystone_ui-preferences. An app that does not have keystone_ui-preferences yet adds it to the Gemfile and runs `bin/rails generate keystone_ui:preferences:install` before these steps.
+keystone_ui-preferences depends on keystone_ui-looks, so the app's Gemfile needs only keystone_ui-preferences. Follow these steps in this order. An app that does not have keystone_ui-preferences yet runs `bin/rails generate keystone_ui:preferences:install` at step 5 instead of the update generator.
 
-1. Update keystone_ui-preferences.
-2. Run its update generator. It copies the migration that copies each saved choice out of `keystone_ui_colors_theme_preferences`, and copies the template picker script when the app does not have it yet.
-3. Remove keystone_ui-colors from the Gemfile and run `bundle install`.
-4. Change each name in the table below. An initializer or route that still names `KeystoneUi::Colors` stops the app from booting.
-5. Run `bin/rails db:migrate`. The app refuses to boot while keystone_ui-colors is loaded, and the migration boots the app, so steps 3 and 4 have to come first.
-6. Register the person's appearance section and the account's appearance section with settings_hub, the account's behind the `manage_account` capability.
-7. Call `super` from any `after_settings_change` the app defines, so saving the appearance section clears the light or dark choice made with keystone_ui's theme toggle.
+1. Set keystone_ui-preferences to `~> 0.7` and remove keystone_ui-colors from the Gemfile, then run `bundle install`.
+2. Change each name in the table below, and move any settings from a keystone_ui-colors initializer into a keystone_ui-preferences initializer. An initializer or route that still names `KeystoneUi::Colors` stops the app from booting.
+3. Register the person's appearance section and the account's appearance section with settings_hub. Register the account's behind the capability the app already uses for its other account sections, since settings_hub refuses a capability the app does not define.
+4. Call `super` from any `after_settings_change` the app defines, so saving the appearance section clears the light or dark choice made with keystone_ui's theme toggle.
+5. Run its update generator. It copies the migration that copies each saved choice out of `keystone_ui_colors_theme_preferences`, and copies the template picker script when the app does not have it yet.
+6. Run `bin/rails db:migrate`.
+
+The app refuses to boot while keystone_ui-colors is loaded, and the generator and the migration both boot the app, so steps 1 to 4 have to come first.
 
 ```bash
-bundle update keystone_ui-preferences
-bin/rails generate keystone_ui:preferences:update
-# remove gem "keystone_ui-colors" from the Gemfile
+# set keystone_ui-preferences to ~> 0.7 and remove gem "keystone_ui-colors" from the Gemfile
 bundle install
-# change each name in the table below
+# change each name in the table below, move the initializer settings, register both appearance sections, call super from after_settings_change
+bin/rails generate keystone_ui:preferences:update
 bin/rails db:migrate
 ```
 
@@ -34,7 +34,7 @@ SettingsHub.section :appearance, area: :user, title: "Appearance",
   runs: "KeystoneUi::Preferences::PickAppearance"
 
 SettingsHub.section :account_appearance, area: :account, title: "Appearance",
-  capability: :manage_account,
+  capability: :manage_account, # the capability the app uses for its other account sections
   renders: "keystone_ui/preferences/settings/account_appearance",
   runs: "KeystoneUi::Preferences::PickAccountAppearance"
 ```
