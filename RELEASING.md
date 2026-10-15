@@ -1,5 +1,7 @@
 # Releasing
 
+keystone_ui-colors is retired, and no version follows 0.6.2. Leave `VERSION` at 0.6.2, so a merge to `main` publishes nothing. The steps below describe how releases were cut before the retirement.
+
 Cutting a release of `keystone_ui-colors` to [RubyGems.org](https://rubygems.org).
 
 ## Prerequisites
