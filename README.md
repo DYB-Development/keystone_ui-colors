@@ -5,7 +5,110 @@
 - [keystone_ui-preferences](https://github.com/DYB-Development/keystone_ui-preferences) saves each person's and each account's colours, mode and look.
 - [keystone_ui-looks](https://github.com/DYB-Development/keystone_ui-looks) holds the colour palettes, the colour templates and the looks.
 
-Everything below this section documents 0.6.2, for apps that have not moved yet.
+The sections from [About 0.6.2](#about-062) onward document 0.6.2, for apps that have not moved yet.
+
+## Moving to keystone_ui-preferences
+
+keystone_ui-preferences depends on keystone_ui-looks, so the app's Gemfile needs only keystone_ui-preferences. An app that does not have keystone_ui-preferences yet adds it to the Gemfile and runs `bin/rails generate keystone_ui:preferences:install` before these steps.
+
+1. Update keystone_ui-preferences.
+2. Run its update generator. It copies the migration that copies each saved choice out of `keystone_ui_colors_theme_preferences`, and copies the template picker script when the app does not have it yet.
+3. Remove keystone_ui-colors from the Gemfile and run `bundle install`.
+4. Change each name in the table below. An initializer or route that still names `KeystoneUi::Colors` stops the app from booting.
+5. Run `bin/rails db:migrate`. The app refuses to boot while keystone_ui-colors is loaded, and the migration boots the app, so steps 3 and 4 have to come first.
+6. Register the person's appearance section and the account's appearance section with settings_hub, the account's behind the `manage_account` capability.
+7. Call `super` from any `after_settings_change` the app defines, so saving the appearance section clears the light or dark choice made with keystone_ui's theme toggle.
+
+```bash
+bundle update keystone_ui-preferences
+bin/rails generate keystone_ui:preferences:update
+# remove gem "keystone_ui-colors" from the Gemfile
+bundle install
+# change each name in the table below
+bin/rails db:migrate
+```
+
+```ruby
+SettingsHub.section :appearance, area: :user, title: "Appearance",
+  renders: "keystone_ui/preferences/settings/appearance",
+  runs: "KeystoneUi::Preferences::PickAppearance"
+
+SettingsHub.section :account_appearance, area: :account, title: "Appearance",
+  capability: :manage_account,
+  renders: "keystone_ui/preferences/settings/account_appearance",
+  runs: "KeystoneUi::Preferences::PickAccountAppearance"
+```
+
+```ruby
+def after_settings_change(**options)
+  super
+  # the app's own work
+end
+```
+
+keystone_ui-preferences' README says how the copy maps each saved column, and that `keystone_ui_colors_theme_preferences` can be dropped once the copy has run.
+
+### Names that change
+
+| keystone_ui-colors | Replaced by |
+|--------------------|-------------|
+| `gem "keystone_ui-colors"` | `gem "keystone_ui-preferences"` |
+| `KeystoneUi::Colors` | `KeystoneUi::Preferences` |
+| `KeystoneUi::Colors::VERSION` | `KeystoneUi::Preferences::VERSION` |
+| `KeystoneUi::Colors.configure` | `KeystoneUi::Preferences.configure` |
+| `KeystoneUi::Colors.configuration` | `KeystoneUi::Preferences.configuration` |
+| `KeystoneUi::Colors.reset_configuration!` | `KeystoneUi::Preferences.reset_configuration!` |
+| `KeystoneUi::Colors::Configuration` | `KeystoneUi::Preferences::Configuration` |
+| `config.current_owner_method` | `config.current_owner_method` |
+| `config.authentication_method` | `config.authentication_method` |
+| `config.current_account_method` | `config.current_account_method` |
+| `config.default_accent` | `config.default_accent` |
+| `config.default_surface` | `config.default_surface` |
+| `config.default_background` | `config.default_background` |
+| `config.default_text` | `config.default_text` |
+| `config.default_mode` | `config.default_mode` |
+| `config.account_colors` | `config.account_colors` |
+| `config.user_looks` | `config.user_looks` |
+| `config.account_looks` | `config.account_looks` |
+| `config.app_look_label` | `config.app_look_label` |
+| `config.default_template` | No replacement |
+| `config.layout` | No replacement |
+| `KeystoneUi::Colors::Engine`, mounted at `/keystone_ui_colors` | `KeystoneUi::Preferences::Engine`, mounted at `/keystone_ui_preferences` |
+| The settings page at the engine's mount, and its `keystone_ui_colors.settings_path` | No replacement, the appearance sections take its place |
+| `KeystoneUi::Colors::ApplicationController` | `KeystoneUi::Preferences::ApplicationController` |
+| `KeystoneUi::Colors::SettingsController` | No replacement |
+| `KeystoneUi::Colors::CurrentPalette` | `KeystoneUi::Preferences::ComponentPreferences` |
+| `before_action :set_current_palette` | No replacement, remove it |
+| `keystone_palette_css` | No replacement |
+| `keystone_palette_style_tag` | `keystone_palette_style_tag`, from `KeystoneUi::Preferences::ComponentPreferences` |
+| `keystone_theme_mode` | `keystone_theme_mode` |
+| `keystone_look` | `keystone_look` |
+| `keystone_host_colors` | `keystone_host_colors` |
+| `KeystoneUi::Colors::PaletteHelper` | No replacement, `KeystoneUi::Preferences::ComponentPreferences` provides `keystone_palette_style_tag` |
+| `KeystoneUi::Colors::HostRoutesHelper` | No replacement |
+| `KeystoneUi::Colors::ApplicationRecord` | `KeystoneUi::Preferences::ApplicationRecord` |
+| `KeystoneUi::Colors::ThemePreference` | `KeystoneUi::Preferences::ComponentPreference`, under the `colours`, `mode` and `look` keys |
+| `ThemePreference#apply_template!` | No replacement |
+| `keystone_ui_colors_theme_preferences` table | `keystone_ui_preferences_component_preferences` table |
+| `KeystoneUi::Colors::ColourChoice` | `KeystoneUi::Preferences::AppearanceChoice` |
+| `KeystoneUi::Colors::CustomColours` | No replacement |
+| `KeystoneUi::Colors::ForgetTheThemeChoice` | No replacement, `after_settings_change` in `KeystoneUi::Preferences::ComponentPreferences` clears the toggle's choice |
+| `KeystoneUi::Colors::PickColours` | `KeystoneUi::Preferences::PickAppearance` |
+| `KeystoneUi::Colors::PickAccountColours` | `KeystoneUi::Preferences::PickAccountAppearance` |
+| `KeystoneUi::Colors::Kept` | `KeystoneUi::Preferences::Kept` |
+| `KeystoneUi::Colors::Refusal` | `KeystoneUi::Preferences::Refusal` |
+| `keystone_ui/colors/settings/picker` | `keystone_ui/preferences/settings/appearance` |
+| `keystone_ui/colors/settings/account_picker` | `keystone_ui/preferences/settings/account_appearance` |
+| `keystone_ui/colors/settings/colours` | `keystone_ui/preferences/settings/colour_choices` |
+| `keystone_ui/colors/settings/looks` | `keystone_ui/preferences/settings/look_choices` |
+| `keystone_ui/colors/settings/show` | No replacement |
+| `KeystoneUi::Colors::Palettes` | `KeystoneUi::Looks::Palettes` |
+| `KeystoneUi::Colors::Templates` | `KeystoneUi::Looks::Templates`, which has no `default` template |
+| `KeystoneUi::Colors::Templates.default_template` | No replacement |
+| `keystone_ui:colors:install` generator | `keystone_ui:preferences:install` generator |
+| `keystone_ui:colors:update` generator | `keystone_ui:preferences:update` generator |
+| `app/javascript/controllers/keystone_ui/colors/theme_settings_controller.js` | `app/javascript/controllers/keystone_ui/preferences/theme_settings_controller.js` |
+| `keystone-ui--colors--theme-settings` Stimulus controller | `keystone-ui--preferences--theme-settings` Stimulus controller |
 
 ## About 0.6.2
 
